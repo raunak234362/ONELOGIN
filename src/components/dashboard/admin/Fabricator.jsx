@@ -1,0 +1,187 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import { Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { FaUserPlus, FaUsers } from 'react-icons/fa'
+
+const Fabricator = ({ totalRegisteredFabricator }) => {
+  const [name, setName] = useState('')
+  const [client, setClient] = useState('')
+  const [clientnum, setClientNum] = useState('')
+  const [showForm, setShowForm] = useState(false)
+  const [info, setInfo] = useState([])
+  const [totalfabricator,setTotalFabricator]=useState([])
+
+  const toggleForm = () => {
+    setShowForm(!showForm)
+  }
+
+  const fetchData = async () => {
+    const myHeaders = new Headers()
+    myHeaders.append('Authorization', `Bearer ${localStorage.getItem('access')}`)
+    
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    }
+
+    await fetch(
+      'https://wbt-onelogin.onrender.com/api/v1/fabricator/all/',
+      requestOptions
+    )
+    .then(async response => {
+      const data = await response.json()
+      console.log(data)
+      setInfo(data?.data)
+      setTotalFabricator(data?.data.length)
+      
+    })
+    .then(result => console.log(result))
+    .catch(error => console.error(error))
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    console.log(name, client)
+    setName('')
+    setClient('')
+  }
+
+  useEffect(()=>{
+    fetchData()
+  })
+
+  return (
+    <div className='fabricator-container p-5'>
+      <div className='flex flex-row justify-around gap-2 mb-8'>
+        <div className='flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]'>
+          <FaUsers className='text-4xl text-slate-400 mb-2' />
+          <h3 className='text-xl font-semibold text-gray-600'>
+            Total fabricator
+          </h3>
+          <p className='text-3xl font-bold text-slate-800'>
+            {totalfabricator}
+          </p>
+        </div>
+
+        {/* Add New User */}
+        <div className='flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]'>
+          <FaUserPlus className='text-4xl text-gray-500 mb-2' />
+          <h3 className='text-xl font-semibold text-gray-600'>
+            Add New Fabricator
+          </h3>
+          <button
+            onClick={toggleForm}
+            className='mt-4 inline-block bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-red-700'
+          >
+            Add
+          </button>
+          {showForm && (
+            <div className='absolute top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center'>
+              <div className='bg-white p-6 rounded-lg shadow-md w-[50%]'>
+                <h2 className=' text-2xl font-bold mb-4'>Add Fabricator</h2>
+                <form
+                  onClick={handleSubmit}
+                  className='space-y-4 bg-slate-200 p-5 rounded-xl'
+                >
+                  <div>
+                    <label htmlFor='name' className='block font-bold'>
+                      Name:
+                    </label>
+                    <input
+                      type='text'
+                      id='name'
+                      placeholder='Project Name'
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      required
+                      className='w-full border border-gray-300 rounded-md px-3 py-2'
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor='name' className='block font-bold'>
+                      Client Name:
+                    </label>
+                    <input
+                      type='text'
+                      id='client-name'
+                      placeholder='Client Name'
+                      value={client}
+                      onChange={e => setClient(e.target.value)}
+                      required
+                      className='w-full border border-gray-300 rounded-md px-3 py-2'
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor='name' className='block font-bold'>
+                      Client Number:
+                    </label>
+                    <input
+                      type='text'
+                      id='clientnum'
+                      placeholder='Client Number'
+                      value={clientnum}
+                      onChange={e => setClientNum(e.target.value)}
+                      required
+                      className='w-full border border-gray-300 rounded-md px-3 py-2'
+                    />
+                  </div>
+                  <div className='flex fle-row gap-5'>
+                    <button className='add-btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full'>
+                      Add Fabricator
+                    </button>
+                    <button
+                      type='button'
+                      onClick={toggleForm}
+                      className='bg-gray-300 text-gray-700 px-4 py-2 rounded-md mr-2 hover:bg-gray-400'
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className='active-user bg-white rounded-xl p-5 drop-shadow-md '>
+        <h2 className='text-2xl font-bold mb-4'>Fabricator</h2>
+      
+        <div className=' h-80 table-container overflow-y-auto'>
+          <table className='w-full table-auto border-collapse text-center'>
+            <thead>
+              <tr className='bg-gray-200'>
+                <th className='px-1 py-2'>S.No</th>
+                <th className='px-6 py-2'>Fabricator</th>
+                <th className='px-3 py-2'>Client Name</th>
+                <th className='px-2 py-2'>Contact Number</th>
+                <th className='px-1 py-2'>Option</th>
+              </tr>
+            </thead>
+            <tbody>
+              {info &&
+                info.map((item, index) => (
+                  <tr key={index} className='bg-gray-100 hover:bg-gray-200'>
+                    <td className='px-1 py-2 border'>{index + 1}</td>
+                    <td className='px-4 py-2 border'>{item?.name}</td>
+                    <td className='px-4 py-2 border'>{item?.clientName}</td>
+                    <td className='px-4 py-2 border'>{item?.clientPhone}</td>
+                    <td className='px-4 py-2 border'>
+                      <button className='modify-btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
+                        Modify
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Fabricator
