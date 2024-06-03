@@ -10,6 +10,7 @@ import Department from './Department';
 import Header from './Header';
 import Footer from './Footer';
 import Fabricator from './Fabricator';
+import Calender from './Calender';
 
 const AdminLayout = () => {
   const [activeLink, setActiveLink] = useState('dashboard');
@@ -51,6 +52,7 @@ const AdminLayout = () => {
               <Link to="/admin/user" onClick={() => handleNavLinkClick('user')}>User</Link>
               <Link to="/admin/fabricator" onClick={() => handleNavLinkClick('fabricator')}>Fabricator</Link>
               <Link to="/admin/department" onClick={() => handleNavLinkClick('department')}>Department</Link>
+              <Link to="/admin/calender" onClick={() => handleNavLinkClick('calender')}>Calender</Link>
             </nav>
           </Sidebar>
         </div>
@@ -98,6 +100,7 @@ const AdminLayout = () => {
               path="/department"
               element={<Department totalDepartments={totalDepartments} totalUsers={totalUsers} />}
             />
+            <Route path='/calender' element={<Calender />} />
           </Routes>
         </div>
         <Footer />
