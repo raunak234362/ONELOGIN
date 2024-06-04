@@ -53,19 +53,13 @@ const Dashboard = ({
       redirect: 'follow'
     }
 
-    await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/project/all',
-      requestOptions
-    )
-      .then(async response => {
+    const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/project/all',requestOptions)
+      
         const data = await response.json()
         console.log(data?.data)
         setProjInfo(data?.data)
         setTotalProject(data?.data.length)
-      })
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.error(error))
+      
   }
 
   const fetchTask = async () => {
@@ -78,19 +72,12 @@ const Dashboard = ({
       redirect: 'follow'
     }
 
-    await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/task/all',
-      requestOptions
-    )
-      .then(async response => {
+    const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/task/all',requestOptions)
+      
         const data = await response.json()
         console.log(data?.data)
         setTaskinfo(data?.data)
         setTotalTask(data?.data.length)
-      })
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.error(error))
   }
 
   const fetchUserGroups = async () => {
@@ -128,19 +115,13 @@ const Dashboard = ({
       redirect: 'follow'
     }
 
-    await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/user/all',
-      requestOptions
-    )
-      .then(async response => {
+    const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/user/all',  requestOptions)
+      
         const data = await response.json()
         console.log(data?.data)
         setInfo(data?.data)
         // setTotalUser()
-      })
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.error(error))
+      
   }
 
   useEffect(() => {

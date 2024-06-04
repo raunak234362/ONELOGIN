@@ -126,7 +126,7 @@ const User = () => {
 
   const fetchFilterData = async () => {
     const myHeaders = new Headers()
-    myHeaders.append('authorization', `Bearer ${localStorage.getItem('token')}`)
+    myHeaders.append('authorization', `Bearer ${localStorage.getItem('access')}`)
     myHeaders.append('Cookie', `token=${localStorage.getItem('token')}`)
 
     const requestOptions = {
@@ -135,33 +135,9 @@ const User = () => {
       redirect: 'follow'
     }
 
-    let URI = `https://wbt-projecttimeline.onrender.com/api/user/all`
-    if (
-      dropDept &&
-      dropType &&
-      dropDept?.trim()?.length !== 0 &&
-      dropType?.trim()?.length !== 0
-    ) {
-      URI = `https://wbt-projecttimeline.onrender.com/api/user/all?department=${dropDept}&type=${dropType}`
-    } else if (dropDept && dropDept?.trim()?.length !== 0) {
-      URI = `https://wbt-projecttimeline.onrender.com/api/user/all?department=${dropDept}`
-    } else if (dropType && dropType?.trim()?.length !== 0) {
-      URI = `https://wbt-projecttimeline.onrender.com/api/user/all?type=${dropType}`
-    } else {
-      URI = `https://wbt-projecttimeline.onrender.com/api/user/all`
-    }
-
-    console.log(URI)
-
-    await fetch(URI, requestOptions)
-      .then(async response => {
-        const data = await response.json()
-        console.log(data?.data)
-        // setInfo(data?.data)
-      })
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.error(error))
+   const response =await fetch (`https://wbt-onelogin.onrender.com/api/v1/group/all/`,requestOptions)
+   const data = await response.json()
+    setUserGroup(data?.data?.accessLevel)
   }
 
   useEffect(() => {

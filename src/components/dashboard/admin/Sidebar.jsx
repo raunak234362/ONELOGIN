@@ -40,68 +40,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
     }
   };
 
-  const fetchUser = async () => {
-    const myHeaders = new Headers();
-    myHeaders.append(
-      "authorization",
-      `Bearer ${localStorage.getItem("token")}`
-    );
-    myHeaders.append("Cookie", `token=${localStorage.getItem("token")}`);
 
-    const requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    await fetch(
-      "https://wbt-projecttimeline.onrender.com/api/user/all",
-      requestOptions
-    )
-      .then(async (response) => {
-        const data = await response.json();
-        console.log(data?.data);
-        setUsers(data?.data);
-      })
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
-  };
-
-  const fetchTask = async () => {
-    const myHeaders = new Headers();
-    myHeaders.append(
-      "authorization",
-      `Bearer ${localStorage.getItem("token")}`
-    );
-    myHeaders.append("Cookie", `token=${localStorage.getItem("token")}`);
-
-    const requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    await fetch(
-      "https://wbt-projecttimeline.onrender.com/api/task/",
-      requestOptions
-    )
-      .then(async (response) => {
-        const data = await response.json();
-        console.log(data?.data);
-        setTaskId(data?.data?._id);
-        setTaskInfo(data?.data);
-        setPastTasks(data?.pastTasks || []);
-      })
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
-  };
-
-  useEffect(() => {
-    fetchUser();
-    fetchTask();
-  }, []);
 
   const location = useLocation();
   const { pathname } = location;
@@ -126,7 +65,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
             <span>Dashboard</span>
           </Link>
           <Link
-            to="/admin/department"
+            to="/admin/usergroup"
             onClick={() => handleNavLinkClick("department")}
             className={`flex items-center gap-2 px-4 py-2 transition-colors duration-300 ${
               pathname === "/admin/department"
@@ -160,6 +99,18 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
           >
             <IoBagAdd className="text-xl" />
             <span>Fabricator</span>
+          </Link>
+          <Link
+            to="/admin/client"
+            onClick={() => handleNavLinkClick("user")}
+            className={`flex items-center gap-2 px-4 py-2 transition-colors duration-300 ${
+              pathname === "/admin/client"
+                ? "bg-green-500 text-white"
+                : "hover:bg-green-700"
+            }`}
+          >
+            <IoBagAdd className="text-xl" />
+            <span>Client</span>
           </Link>
           <Link
             to="/admin/project"

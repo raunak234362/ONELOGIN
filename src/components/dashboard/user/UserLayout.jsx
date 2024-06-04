@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Sidebar from './Sidebar'
-import { Link, Route, Routes } from 'react-router-dom'
+import {  Route, Routes } from 'react-router-dom'
 import Header from './Header'
 import Dashboard from './Dashboard'
 import { FaBars, FaTimes } from 'react-icons/fa'
@@ -36,26 +36,8 @@ const UserLayout = () => {
           <Sidebar
             activeLink={activeLink}
             handleNavLinkClick={handleNavLinkClick}
-          >
-            <nav className='p-4'>
-              <Link to='/user' onClick={() => handleNavLinkClick('user')}>
-                User
-              </Link>
-              <Link
-                to='/user/task'
-                onClick={() => handleNavLinkClick('task')}
-              >
-                Task
-              </Link>
-              <Link
-                to='/user/project'
-                onClick={() => handleNavLinkClick('project')}
-              >
-                Project
-              </Link>
-              {/* Add more sidebar links here */}
-            </nav>
-          </Sidebar>
+          />
+            
         </div>
       </div>
 

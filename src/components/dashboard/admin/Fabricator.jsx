@@ -27,24 +27,18 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
       redirect: 'follow'
     }
 
-    await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/fabricator/all/',
-      requestOptions
-    )
-    .then(async response => {
+    const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/fabricator/all/',requestOptions)
+    
       const data = await response.json()
-      console.log(data)
       setInfo(data?.data)
       setTotalFabricator(data?.data.length)
       
-    })
-    .then(result => console.log(result))
-    .catch(error => console.error(error))
+      
+    
   }
 
   const handleSubmit = e => {
     e.preventDefault()
-    console.log(name, client)
     setName('')
     setClient('')
   }
