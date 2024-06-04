@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FaTasks, FaUserPlus, FaUsers } from "react-icons/fa";
 import { MdOutlinePendingActions } from "react-icons/md";
+import ApprovalList from "./ApprovalList";
 
 const Task = ({ totalActiveTask }) => {
   const [addTask, setAddTask] = useState({});
@@ -25,6 +26,7 @@ const Task = ({ totalActiveTask }) => {
   const [comment, setComment] = useState("");
   const [modifyTask, setModifyTask] = useState({});
   const [approval, setApproval] = useState(0);
+  const [showApprove, setShowApprove] = useState(false);
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -32,6 +34,10 @@ const Task = ({ totalActiveTask }) => {
   const toggleTask = () => {
     setShowTask(!showTask);
   };
+  const toggleApprove = () => {
+    setShowApprove(!showApprove);
+  };
+
 
   const fetchTaskData = async () => {
     const myHeaders = new Headers();
@@ -274,12 +280,46 @@ const Task = ({ totalActiveTask }) => {
   return (
     <div className="p-5">
       <div className="flex flex-row justify-around gap-2 mb-8">
+       
+        {/* Total Verified Users */}
+        <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
+          <FaTasks className="text-4xl text-gray-500 mb-2" />
+          <h3 className="text-xl text-center font-semibold text-gray-600">
+            Total Active Tasks
+          </h3>
+          <p className="text-3xl font-bold text-gray-800">{totaltask}</p>
+        </div>
+
+        {/* Approve Assign */}
+        <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
+          <MdOutlinePendingActions className="text-4xl text-gray-500 mb-2" />
+          <h3 className="text-xl text-center font-semibold text-gray-600">
+            Approval Remaining
+          </h3>
+          <p className="text-3xl font-bold text-gray-800">{approval}</p>
+          
+        </div>
+        <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
+          <MdOutlinePendingActions className="text-4xl text-gray-500 mb-2" />
+          <h3 className="text-xl text-center font-semibold text-gray-600">
+            Approval List
+          </h3>
+          <button
+          onClick={toggleApprove}
+          className="mt-4 inline-block bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+          >Show</button>
+          {showApprove && (
+            <div className="absolute top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center">
+              <ApprovalList toggleApprove={toggleApprove}/>
+              </div>
+              )}
+        </div>
         <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
           <FaTasks className="text-4xl text-slate-400 mb-2" />
           <h3 className="text-xl font-semibold text-gray-600">My Task</h3>
           <button
             onClick={toggleTask}
-            className="mt-4 inline-block bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-red-700"
+            className="mt-4 inline-block bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
           >
             Open
           </button>
@@ -453,35 +493,15 @@ const Task = ({ totalActiveTask }) => {
               </div>
             </div>
           )}
-          {/* <p className='text-3xl font-bold text-slate-800'>
-            {totalRegisteredUsers}
-          </p> */}
+         
         </div>
-        {/* Total Verified Users */}
-        <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
-          <FaTasks className="text-4xl text-gray-500 mb-2" />
-          <h3 className="text-xl font-semibold text-gray-600">
-            Total Active Tasks
-          </h3>
-          <p className="text-3xl font-bold text-gray-800">{totaltask}</p>
-        </div>
-
-        {/* Approve Assign */}
-        <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
-          <MdOutlinePendingActions className="text-4xl text-gray-500 mb-2" />
-          <h3 className="text-xl font-semibold text-gray-600">
-            Approval Remaining
-          </h3>
-          <p className="text-3xl font-bold text-gray-800">{approval}</p>
-        </div>
-
         {/* Add New User */}
         <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
           <FaUserPlus className="text-4xl text-gray-500 mb-2" />
           <h3 className="text-xl font-semibold text-gray-600">Add New Task</h3>
           <button
             onClick={toggleForm}
-            className="mt-4 inline-block bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-red-700"
+            className="mt-4 inline-block bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
           >
             Add
           </button>
@@ -705,7 +725,7 @@ const Task = ({ totalActiveTask }) => {
                       {item?.project?.fabricator?.name}
                     </td>
                     <td className="py-2 px-4 border">{item?.title}</td>
-                    <td className="py-2 px-4 border">{item?.title}</td>
+                    <td className="py-2 px-4 border">{item?.project?.name}</td>
                     <td className="py-2 px-4 border">
                       {item?.currentUser?.username}
                     </td>
