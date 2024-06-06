@@ -2,15 +2,18 @@
 /* eslint-disable react/prop-types */
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.png";
-import { BiHome } from "react-icons/bi";
+import { BiHome, BiMoney } from "react-icons/bi";
 import { IoBagAdd } from "react-icons/io5";
 import { GoProject } from "react-icons/go";
-import { FaTasks } from "react-icons/fa";
+import { FaTasks, FaTools } from "react-icons/fa";
 
 import profile from "../../../assets/user.jpg";
 import { MdLogout } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useUser } from "../../../hooks/useUser";
+import { Calendar, User, Users } from "lucide-react";
+import { FaMoneyCheckDollar } from "react-icons/fa6";
+import { ImOffice } from "react-icons/im";
 
 const Sidebar = ({ activeLink, handleNavLinkClick }) => {
   const navigate = useNavigate();
@@ -46,7 +49,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
   const { pathname } = location;
 
   return (
-    <div className="fixed left-0 flex flex-col justify-between h-screen px-0 py-4 border-green-500 border-r-2">
+    <div className="fixed left-0 flex flex-col justify-between h-screen px-0 pt-4 border-green-500 border-r-2">
       <div className="navbar-section">
         <div className="flex justify-center px-2">
           <img src={logo} className=" w-60" />
@@ -73,7 +76,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
                 : "hover:bg-green-700 "
             }`}
           >
-            <IoBagAdd className="text-xl" />
+            <Users className="text-xl" />
             <span>User Group</span>
           </Link>
           <Link
@@ -85,7 +88,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
                 : "hover:bg-green-700"
             }`}
           >
-            <IoBagAdd className="text-xl" />
+            <User className="text-xl" />
             <span>User</span>
           </Link>
           <Link
@@ -97,7 +100,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
                 : "hover:bg-green-700"
             }`}
           >
-            <IoBagAdd className="text-xl" />
+            <FaTools className="text-xl" />
             <span>Fabricator</span>
           </Link>
           <Link
@@ -109,7 +112,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
                 : "hover:bg-green-700"
             }`}
           >
-            <IoBagAdd className="text-xl" />
+            <ImOffice className="text-xl" />
             <span>Client</span>
           </Link>
           <Link
@@ -145,12 +148,12 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
                 : "hover:bg-green-700"
             }`}
           >
-            <FaTasks className="text-xl" />
+            <Calendar className="text-xl" />
             <span>Calender</span>
           </Link>
         </nav>
       </div>
-      <div className="profile-logout mb-4 px-4">
+      <div className="profile-logout px-4">
         <div className="flex flex-row items-center gap-4 mb-4">
           <img
             src={profile}
@@ -160,10 +163,10 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
           <p className="text-black">{user?.username}</p>
         </div>
         <div className="flex flex-row items-center hover:bg-green-600 hover:text-white py-2 px-3 gap-4 mb-4  rounded-lg">
-          <MdLogout />
+          <MdLogout className="text-2xl"/>
           <button
             onClick={fetchLogout}
-            className="text-sm  hover:text-white w-full text-center"
+            className="text-lg  hover:text-white w-full text-center"
           >
             Logout
           </button>

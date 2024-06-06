@@ -5,13 +5,11 @@ import { Container } from 'react-bootstrap'
 import { Pie } from 'react-chartjs-2'
 import { FaBuilding, FaPlusCircle, FaUsers } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import ProjectPie from './ProjectPie'
+import PriorityPie from './PriorityPie'
+import StatusPie from './StatusPie'
 
-const Dashboard = ({
-  totalDepartments,
-  totalUsers,
-  totalProjects,
-  totalTasks
-}) => {
+const Dashboard = ({ totalUsers}) => {
   const [preDept, setPreDept] = useState([])
   const [projinfo, setProjInfo] = useState([])
   const [taskinfo, setTaskinfo] = useState([])
@@ -56,7 +54,7 @@ const Dashboard = ({
     const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/project/all',requestOptions)
       
         const data = await response.json()
-        console.log(data?.data)
+        // console.log(data?.data)
         setProjInfo(data?.data)
         setTotalProject(data?.data.length)
       
@@ -75,7 +73,7 @@ const Dashboard = ({
     const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/task/all',requestOptions)
       
         const data = await response.json()
-        console.log(data?.data)
+        // console.log(data?.data)
         setTaskinfo(data?.data)
         setTotalTask(data?.data.length)
   }
@@ -100,7 +98,7 @@ const Dashboard = ({
         setPreDept(data?.data)
         setTotalUserGroup(data?.data.length)
       })
-      .then(result => console.log(result))
+      // .then(result => console.log(result))
       .catch(error => console.error(error))
   }
 
@@ -118,7 +116,7 @@ const Dashboard = ({
     const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/user/all',  requestOptions)
       
         const data = await response.json()
-        console.log(data?.data)
+        // console.log(data?.data)
         setInfo(data?.data)
         // setTotalUser()
       
@@ -131,35 +129,7 @@ const Dashboard = ({
     fetchProject()
   }, [])
 
-  const ProjectPieChart = ({ data, title }) => {
-    const chartData = {
-      labels: ['Completed', 'Approved', 'On-Hold'],
-      datasets: [
-        {
-          data: data,
-          backgroundColor: ['#15803d', '#f97316', '#fbbf24'],
-          hoverBackgroundColor: ['#15803d', '#f97316', '#fbbf24']
-        }
-      ]
-    }
 
-    return (
-      <div>
-        <Pie data={chartData} />
-        <h3 className='text-center mt-3 font-semibold mb-2'>{title}</h3>
-      </div>
-    )
-  }
-
-  const ProjectpieData = [
-    [10, 20, 30],
-    [15, 25, 35],
-    [20, 30, 40],
-    [25, 35, 45],
-    [30, 40, 50],
-    [35, 45, 55]
-  ]
-  const projecttitles = ['IFA', 'BFA', 'R-IFA', 'BFA', 'IFC', 'REV']
 
   const FabricatorPieChart = ({ data }) => {
     const chartData = {
@@ -202,44 +172,6 @@ const Dashboard = ({
   const FabricatorpieData = [[10, 20, 30, 10, 15]]
   
 
-  const PriorityPieChart = ({ data }) => {
-    const chartData = {
-      labels: [
-        'Highest',
-        'High',
-        'Medium',
-        'Low',
-      ],
-      datasets: [
-        {
-          data: data,
-          backgroundColor: [
-            '#dc2626',
-            '#ea580c',
-            '#fbbf24',
-            '#16a34a',
-            
-          ],
-          hoverBackgroundColor: [
-            '#dc2626',
-            '#ea580c',
-            '#fbbf24',
-            '#16a34a',
-          ]
-        }
-      ]
-    }
-
-    return (
-      <div>
-        <Pie data={chartData} />
-        <h3 className='text-center mt-3 font-semibold mb-2'>Priority</h3>
-      </div>
-    )
-  }
-
-  const PrioritypieData = [[20, 30, 40, 10]]
-
   const StatusPieChart = ({ data }) => {
     const chartData = {
       labels: ['Completed', 'On-Hold', 'Approval'],
@@ -261,7 +193,8 @@ const Dashboard = ({
   }
 
   const StatuspieData = [[10, 20, 30]]
-  
+
+  const StageInfo = ['IFA', 'BFA', 'RIFA', 'BFA', 'IFC', 'REV'];
 
   return (
     <div className='dashboard-container p-5'>
@@ -286,9 +219,9 @@ const Dashboard = ({
           <div className='flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-1/4'>
             <FaUsers className='text-4xl text-slate-400 mb-2' />
             <h3 className='text-xl font-semibold text-gray-600'>
-              Users in Group
+              Total Users
             </h3>
-            <p className='text-3xl font-bold text-gray-800'>{totalUsers}</p>
+            <p className='text-3xl font-bold text-gray-800'>{info.length}</p>
           </div>
           {/* Total tasks */}
           <div className='flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-1/4'>
@@ -301,28 +234,27 @@ const Dashboard = ({
         <div className='bg-white p-5 justify-center mb-6 rounded-xl'>
           <h1 className='text-center text-2xl mb-4 font-semibold'>Project</h1>
           <div className='grid grid-cols-6 justify-around gap-5 mb-8 w-full'>
-            {ProjectpieData.map((data, index) => (
-              <div
-                key={index}
-                className='bg-white p-5 rounded-xl shadow-xl shadow-green-200'
-              >
-                <ProjectPieChart data={data} title={projecttitles[index]} />
-              </div>
-            ))}
+            {
+              StageInfo?.map((item, index) => (
+                <>
+                  <ProjectPie stage={item} key={index}/>
+                </>
+              ))
+            }
           </div>
         </div>
 
         <div className='bg-white p-5 flex flex-col justify-center mb-6 rounded-xl'>
           <h1 className='text-center text-2xl mb-5 font-semibold'>Task</h1>
           <div className='flex flex-row gap-9 mb-8 w-[100%] justify-center mx-0'>
-            <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
+            {/* <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
             <FabricatorPieChart data={FabricatorpieData[0]} />
+            </div> */}
+            <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
+              <PriorityPie />
             </div>
             <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
-            <PriorityPieChart data={PrioritypieData[0]}/>
-            </div>
-            <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
-            <StatusPieChart data={StatuspieData[0]}/>
+            <StatusPie />
             </div>
           </div>
         </div>

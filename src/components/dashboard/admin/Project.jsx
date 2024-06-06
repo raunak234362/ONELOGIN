@@ -5,6 +5,7 @@ import { FaBuilding, FaTasks, FaUserPlus, FaUsers } from 'react-icons/fa'
 import { Pie } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Search } from 'lucide-react'
+import ProjectPie from './ProjectPie'
 
 const Project = () => {
   const [formData, setFormData] = useState({})
@@ -168,6 +169,8 @@ const Project = () => {
     const data = await response.json();
     console.log(data)
   }
+
+  const StageInfo = ['IFA', 'BFA', 'RIFA', 'BFA', 'IFC', 'REV'];
 
   const ProjectPieChart = ({ data, title }) => {
     const chartData = {
@@ -793,14 +796,13 @@ const Project = () => {
         <div className='bg-white p-5 justify-center mb-6 rounded-xl'>
           <h1 className='text-center text-2xl mb-4 font-semibold'>Project</h1>
           <div className='flex flex-row justify-around gap-5 mb-8 overflow-x-auto w-full'>
-            {ProjectpieData.map((data, index) => (
-              <div
-                key={index}
-                className='bg-white p-5 rounded-xl shadow-xl shadow-green-200 w-60 mb-0'
-              >
-                <ProjectPieChart data={data} title={projecttitles[index]} />
-              </div>
-            ))}
+          {
+              StageInfo?.map((item, index) => (
+                <>
+                  <ProjectPie stage={item}/>
+                </>
+              ))
+            }
           </div>
         </div>
 

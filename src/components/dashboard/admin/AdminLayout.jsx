@@ -36,7 +36,7 @@ const AdminLayout = () => {
   const totalActiveTask = 12;
 
   return (
-    <div className="flex flex-col md:flex-row gap-2 h-screen relative">
+    <div className="flex flex-col md:flex-row h-screen relative">
       <div
         className={`fixed inset-0 z-0 bg-black bg-opacity-50  transition-opacity duration-300 md:hidden ${
           showSidebar ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -59,7 +59,7 @@ const AdminLayout = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-2 rounded-lg h-auto overflow-y-auto">
+      <div className="flex-1 rounded-lg h-auto overflow-y-auto">
         {/* Header with Toggler Button */}
         <div className="flex justify-between items-center bg-white/70 p-4 rounded-lg shadow-lg shadow-green-200 mb-4 border-b border-green-700/80">
           <Header activeLink={activeLink} />
