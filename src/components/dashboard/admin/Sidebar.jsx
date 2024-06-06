@@ -17,10 +17,6 @@ import { ImOffice } from "react-icons/im";
 
 const Sidebar = ({ activeLink, handleNavLinkClick }) => {
   const navigate = useNavigate();
-  const [users, setUsers] = useState([]);
-  const [taskInfo, setTaskInfo] = useState(null);
-  const [taskId, setTaskId] = useState(null);
-  const [pastTasks, setPastTasks] = useState([]);
   const { user } = useUser();
 
   const fetchLogout = async () => {
