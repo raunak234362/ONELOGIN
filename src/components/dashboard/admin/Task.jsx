@@ -27,6 +27,7 @@ const Task = ({ totalActiveTask }) => {
   const [modifyTask, setModifyTask] = useState({});
   const [approval, setApproval] = useState(0);
   const [showApprove, setShowApprove] = useState(false);
+  const [remainTask, setRemainTask] = useState()
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -36,6 +37,26 @@ const Task = ({ totalActiveTask }) => {
   };
   const toggleApprove = () => {
     setShowApprove(!showApprove);
+  };
+
+  const fetchTask = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("access")}`
+    );
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+    const response = await fetch(
+      "https://wbt-onelogin.onrender.com/api/v1/task/assign/all",
+      requestOptions
+    );
+    const data = await response.json();
+    setRemainTask(data?.data?.length);
+    console.log(data?.data);
   };
 
 
@@ -270,10 +291,13 @@ const Task = ({ totalActiveTask }) => {
     // })
   };
 
+  
+
   useEffect(() => {
     fetchTaskData();
     fetchUserTask();
     fetchProject();
+    fetchTask();
     fetchUsers();
   }, []);
 
@@ -296,7 +320,7 @@ const Task = ({ totalActiveTask }) => {
           <h3 className="text-xl text-center font-semibold text-gray-600">
             Approval Remaining
           </h3>
-          <p className="text-3xl font-bold text-gray-800">{approval}</p>
+          <p className="text-3xl font-bold text-gray-800">{remainTask}</p>
           
         </div>
         {/* Approval List */}

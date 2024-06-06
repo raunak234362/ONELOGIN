@@ -27,7 +27,7 @@ const ApprovalList = ({ toggleApprove }) => {
     console.log(data?.data);
   };
 
-  const approveTask = async () => {
+  const approveTask = async (taskId, assignId) => {
     const myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -39,14 +39,18 @@ const ApprovalList = ({ toggleApprove }) => {
       method: "POST",
       headers: myHeaders,
       redirect: "follow",
+      body: JSON.stringify({
+        assignId: assignId,
+      })
     };
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${task?._id}/approve/`,
+      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/approve/`,
       requestOptions
     );
     const data = await response.json();
-    
+    // setTask(data?.assign?.assignedTo)
+    alert("Task Approved")
     console.log(data);
   };
 
@@ -87,7 +91,10 @@ const ApprovalList = ({ toggleApprove }) => {
                   <td className="py-2 px-4 border">{item?.status}</td>
                   <td className="py-2 px-4 border">
                    <button
-                   onClick={approveTask}
+                   onClick={(e) => {
+                    e.preventDefault();
+                    approveTask(item?.taskId, item?.assignId)
+                   }}
                    className="mt-4 inline-block w-1/2 bg-green-500 text-center text-white py-2 px-4 rounded-lg hover:bg-red-700"
                    >Approve</button>
                   </td>
