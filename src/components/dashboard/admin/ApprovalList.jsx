@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
 import { useEffect, useState } from "react";
 
 const ApprovalList = ({ toggleApprove }) => {
   const [task, setTask] = useState();
+  
 
   const fetchTask = async () => {
     const myHeaders = new Headers();
@@ -17,7 +19,7 @@ const ApprovalList = ({ toggleApprove }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/task/all",
+      "https://wbt-onelogin.onrender.com/api/v1/task/assign/all",
       requestOptions
     );
     const data = await response.json();
@@ -40,10 +42,11 @@ const ApprovalList = ({ toggleApprove }) => {
     };
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/664c7204cd321c18986ed5e7/approve/`,
+      `https://wbt-onelogin.onrender.com/api/v1/task/${task?._id}/approve/`,
       requestOptions
     );
     const data = await response.json();
+    
     console.log(data);
   };
 
@@ -63,7 +66,7 @@ const ApprovalList = ({ toggleApprove }) => {
               <th className="py-1 px-4 border">S.No</th>
               {/* <th className="py-2 px-4 border">Fabricator</th> */}
               <th className="py-2 px-4 border">Title</th>
-              <th className="py-2 px-4 border">Project</th>
+              
               <th className="py-2 px-4 border">Team Lead</th>
               <th className="py-2 px-4 border">Project Status</th>
               <th className="py-1 px-4 border">Option</th>
@@ -77,27 +80,16 @@ const ApprovalList = ({ toggleApprove }) => {
                   {/* <td className="py-2 px-4 border">
                     {item?.project?.fabricator?.name}
                   </td> */}
-                  <td className="py-2 px-4 border">{item?.title}</td>
-                  <td className="py-2 px-4 border">{item?.project?.name}</td>
+                  
+                  <td className="py-2 px-4 border">{item?.taskTitle}</td>
+                  <td className="py-2 px-4 border">{item?.teamLeader?.username}</td>
+                  
+                  <td className="py-2 px-4 border">{item?.status}</td>
                   <td className="py-2 px-4 border">
-                    {item?.currentUser?.username}
-                  </td>
-                  <td className="py-2 px-4 border">{item?.project?.status}</td>
-                  <td className="py-2 px-4 border">
-                    <select
-                      id="status"
-                      value={task?.status}
-                      onChange={(e) =>
-                        setTask({ ...task, status: e.target.value })
-                      }
-                    >
-                      <option value="">Select Status</option>
-                      <option value="Approve">Approve</option>
-                      <option value="Reject">Reject</option>
-                      <option value="Hold">Hold</option>
-                      <option value="Cancel">Cancel</option>
-                      <option value="Complete">Complete</option>
-                    </select>
+                   <button
+                   onClick={approveTask}
+                   className="mt-4 inline-block w-1/2 bg-green-500 text-center text-white py-2 px-4 rounded-lg hover:bg-red-700"
+                   >Approve</button>
                   </td>
                 </tr>
               ))}

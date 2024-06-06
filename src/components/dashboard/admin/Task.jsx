@@ -140,7 +140,7 @@ const Task = ({ totalActiveTask }) => {
       "authorization",
       `Bearer ${localStorage.getItem("access")}`
     );
-    myHeaders.append("Content-Type", "application/json"); // Add this line
+    myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
       assignedUser: assignedTo,
@@ -251,7 +251,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(requestOptions);
 
     const response = await fetch(
-      `{https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/assign/}`,
+      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/assign/`,
       requestOptions
     );
     const data = await response.json();
@@ -299,6 +299,7 @@ const Task = ({ totalActiveTask }) => {
           <p className="text-3xl font-bold text-gray-800">{approval}</p>
           
         </div>
+        {/* Approval List */}
         <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
           <MdOutlinePendingActions className="text-4xl text-gray-500 mb-2" />
           <h3 className="text-xl text-center font-semibold text-gray-600">
@@ -531,7 +532,7 @@ const Task = ({ totalActiveTask }) => {
                       {projInfo &&
                         projInfo.map((item, index) => (
                           <option value={item?.number} key={index}>
-                            {item?.name}({item?.number})
+                            {item?.name}{item?.number}
                           </option>
                         ))}
                     </select>

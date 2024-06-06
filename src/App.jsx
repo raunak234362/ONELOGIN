@@ -30,7 +30,7 @@ function App() {
           element={
             user?.userGroup?.accessLevel === "user"
               ? <UserLayout />
-              : <Login />
+              : <UserLayout />
           }
         />
       </Routes>
