@@ -187,6 +187,8 @@ const Task = ({ totalActiveTask }) => {
       assign: [...prevState.assign],
     }));
     alert("Assigned Successfully, waiting for approval");
+    await fetchTask();
+    await fetchUserTask();
   };
 
   const pastComment = async () => {
@@ -213,14 +215,15 @@ const Task = ({ totalActiveTask }) => {
       .catch((error) => console.error(error));
   };
 
-  const addComment = async () => {
+  const addComment = async (taskId) => {
     const myHeaders = new Headers();
     myHeaders.append(
       "authorization",
       `Bearer ${localStorage.getItem("access")}`
     );
+    myHeaders.append("Content-Type", "application/json");
 
-    const raw = JSON.stringify({ data: newComment });
+    const raw = JSON.stringify({ text: newComment });
 
     const requestOptions = {
       method: "POST",
@@ -236,7 +239,8 @@ const Task = ({ totalActiveTask }) => {
     )
       .then(async (response) => {
         const data = await response.json();
-        setNewComment(data?.data);
+        setNewComment("");
+        await fetchUserTask();
       })
       .catch((error) => console.error(error));
   };
@@ -261,34 +265,23 @@ const Task = ({ totalActiveTask }) => {
       "authorization",
       `Bearer ${localStorage.getItem("access")}`
     );
-    myHeaders.append("Content-Type", "application/json"); // Add this line
+    myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify(addTask),
       redirect: "follow",
+      
     };
     console.log(requestOptions);
+    console.log(addTask)
 
-    const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/assign/`,
-      requestOptions
-    );
+    const response = await fetch( `https://wbt-onelogin.onrender.com/api/v1/task/create`, requestOptions);
     const data = await response.json();
-    setAddTask(data?.data);
+    // setAddTask(data?.data);
     console.log(response);
 
-    // Reset form
-    // setAddTask({
-    //   number: '',
-    //   title: '',
-    //   type: '',
-    //   priority: '',
-    //   dueDate: '',
-    //   assignedTo: '',
-    //   description: ''
-    // })
   };
 
   
@@ -339,6 +332,7 @@ const Task = ({ totalActiveTask }) => {
               </div>
               )}
         </div>
+        {/* My Task */}
         <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
           <FaTasks className="text-4xl text-slate-400 mb-2" />
           <h3 className="text-xl font-semibold text-gray-600">My Task</h3>
@@ -367,7 +361,7 @@ const Task = ({ totalActiveTask }) => {
                 </div>
                 <div className="mb-4">
                   <h2 className="text-2xl font-bold text-gray-800">
-                    {usertask?.currentUser?.name}
+                    {usertask?.title}
                   </h2>
                 </div>
 
@@ -448,9 +442,9 @@ const Task = ({ totalActiveTask }) => {
                       <select
                         type="text"
                         id="assignedTo"
-                        value={addTask?.assignedTo}
+                        value={assignedTo}
                         onChange={(e) =>
-                          setAddTask({ ...addTask, assignedTo: e.target.value })
+                          setAssignedTo(e.target.value)
                         }
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded"
@@ -458,7 +452,7 @@ const Task = ({ totalActiveTask }) => {
                         <option value="">AssignedTo</option>
                         {users &&
                           users.map((item, index) => (
-                            <option value={item?.name} key={index}>
+                            <option value={item?._id} key={index}>
                               {item?.name}
                             </option>
                           ))}
@@ -484,14 +478,14 @@ const Task = ({ totalActiveTask }) => {
                     <input
                       type="text"
                       placeholder="Comment"
-                      value={comment}
-                      onChange={(e) => setComment(e.target.value)}
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
                       className="flex-grow px-4 py-2 border border-gray-300 rounded bg-gray-100 text-gray-800 mr-2"
                     />
                     <button
                       onClick={async (e) => {
                         e.preventDefault();
-                        await addComment();
+                        await addComment(usertask?._id);
                       }}
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     >
@@ -499,7 +493,7 @@ const Task = ({ totalActiveTask }) => {
                     </button>
                   </div>
                   <ul className="list-disc list-inside">
-                    {taskinfo?.comment?.map((comments, index) => (
+                    {usertask?.comments?.map((comment, index) => (
                       <li
                         key={index}
                         className="mb-2 bg-gray-100 p-4 rounded-lg"
@@ -507,10 +501,10 @@ const Task = ({ totalActiveTask }) => {
                         <div className="text-gray-600">
                           By{" "}
                           <strong className="text-gray-800">
-                            {comments?.by?.username}
+                            {comment?.commentedBy?.username}
                           </strong>
                         </div>
-                        <div className="text-gray-700">:- {comments?.data}</div>
+                        <div className="text-gray-700">:- {comment?.text}</div>
                       </li>
                     ))}
                   </ul>
@@ -520,7 +514,7 @@ const Task = ({ totalActiveTask }) => {
           )}
          
         </div>
-        {/* Add New User */}
+        {/* Add New Task */}
         <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
           <FaUserPlus className="text-4xl text-gray-500 mb-2" />
           <h3 className="text-xl font-semibold text-gray-600">Add New Task</h3>
@@ -545,9 +539,9 @@ const Task = ({ totalActiveTask }) => {
                     <select
                       type="text"
                       id="selectproject"
-                      value={addTask?.number}
+                      value={addTask?.project}
                       onChange={(e) =>
-                        setAddTask({ ...addTask, number: e.target.value })
+                        setAddTask({ ...addTask, project: e.target.value })
                       }
                       required
                       className="w-full px-4 py-2 border border-gray-300 rounded"
@@ -555,7 +549,7 @@ const Task = ({ totalActiveTask }) => {
                       <option value="">Select Project</option>
                       {projInfo &&
                         projInfo.map((item, index) => (
-                          <option value={item?.number} key={index}>
+                          <option value={item?._id} key={index}>
                             {item?.name}{item?.number}
                           </option>
                         ))}
@@ -608,9 +602,9 @@ const Task = ({ totalActiveTask }) => {
                     <select
                       type="text"
                       id="assignedTo"
-                      value={addTask?.assignedTo}
+                      value={addTask?.assignedUser}
                       onChange={(e) =>
-                        setAddTask({ ...addTask, assignedTo: e.target.value })
+                        setAddTask({ ...addTask, assignedUser: e.target.value })
                       }
                       required
                       className="w-full px-4 py-2 border border-gray-300 rounded"
@@ -618,11 +612,26 @@ const Task = ({ totalActiveTask }) => {
                       <option value="">AssignedTo</option>
                       {users &&
                         users.map((item, index) => (
-                          <option value={item?.username} key={index}>
+                          <option value={item?._id} key={index}>
                             {item?.username}
                           </option>
                         ))}
                     </select>
+                  </div>
+                  <div>
+                    <label htmlFor="dueDate" className="block font-bold mb-2">
+                      Start Date:
+                    </label>
+                    <input
+                      type="date"
+                      id="startDate"
+                      value={addTask?.startDate}
+                      onChange={(e) =>
+                        setAddTask({ ...addTask, startDate: e.target.value })
+                      }
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded"
+                    />
                   </div>
                   <div>
                     <label htmlFor="dueDate" className="block font-bold mb-2">
@@ -759,7 +768,7 @@ const Task = ({ totalActiveTask }) => {
                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                         onClick={() => handleModifyClick(index)}
                       >
-                        Modify
+                        View
                       </button>
                     </td>
                   </tr>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { Search } from 'lucide-react'
@@ -97,22 +98,12 @@ const Task = ({ totalActiveTask }) => {
       headers: myHeaders,
       redirect: 'follow'
     }
-
-    // console.log(requestOptions);
-
-    await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/user/all/',
-      requestOptions
-    )
-      .then(async response => {
+    const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/user/all/',  requestOptions )
+      
         const data = await response.json()
+        setAssignedUser(data?.data)
         console.log(data)
-        setAssignedUser(
-          data?.data.map(user => ({ name: user.name, value: user._id }))
-        )
-      })
-
-      .catch(error => console.error(error))
+      
   }
 
   const handleAssign = async () => {
@@ -173,14 +164,16 @@ const Task = ({ totalActiveTask }) => {
      .catch(error => console.error(error))
   }
 
-  const addComment = async () => {
+  const addComment = async (taskId) => {
     const myHeaders = new Headers()
     myHeaders.append(
       'authorization',
       `Bearer ${localStorage.getItem('access')}`
     )
+    
+    myHeaders.append("Content-Type", "application/json");
 
-    const raw = JSON.stringify({ data: newComment })
+    const raw = JSON.stringify({ text: newComment })
 
     const requestOptions = {
       method: 'POST',
@@ -190,15 +183,13 @@ const Task = ({ totalActiveTask }) => {
     }
     console.log(requestOptions)
 
-    await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/addComment/`,
-      requestOptions
-    )
-    .then(async response => {
+    const response = await fetch(`https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/addComment/`,  requestOptions)
+    
+    console.log(taskId)
       const data = await response.json()
-      setNewComment(data?.data)
-    })
-      .catch(error => console.error(error))
+      setNewComment("")
+      await fetchUserTask();
+   
   }
 
   const handleModifyClick = index => {
@@ -310,7 +301,7 @@ const Task = ({ totalActiveTask }) => {
                 </div>
                 <div className='mb-4'>
                   <h2 className='text-2xl font-bold text-gray-800'>
-                    {usertask?.currentUser?.name}
+                    {usertask?.title}
                   </h2>
                 </div>
 
@@ -349,63 +340,70 @@ const Task = ({ totalActiveTask }) => {
                   </p>
                 </div>
 
-                <div className='mb-5 bg-gray-200 p-5 rounded-xl'>
-                  <h4 className='text-lg font-bold text-gray-800 mb-5 bg-white p-2 rounded-lg'>
+                  <div className="mb-5 bg-gray-200 p-5 rounded-xl">
+                  <h4 className="text-lg font-bold text-gray-800 mb-5 bg-white p-2 rounded-lg">
                     People Assigned
                   </h4>
-                  <ul className='list-disc list-inside bg-gray-400 p-5 rounded-xl'>
-                    {usertask?.assign?.map((assign, index) => (
-                      <li
-                        key={index}
-                        className='flex items-center mb-2 bg-gray-100 p-4 rounded-lg'
-                      >
-                        <CgProfile className='text-gray-500 mr-2' />
-                        <div>
-                          <p className='text-gray-600'>
-                            Assigned By{' '}
-                            <strong className='text-gray-800'>
-                              {assign?.assignedBy?.name}
-                            </strong>
-                          </p>
-                          <p className='text-gray-600'>
-                            Assigned To{' '}
-                            <strong className='text-gray-800'>
-                              {assign?.assignedTo?.name}
-                            </strong>
-                          </p>
-                        </div>
-                      </li>
-                    ))}
+                  <ul className="list-disc list-inside bg-gray-400 p-5 rounded-xl">
+                    {usertask?.assign?.map(
+                      (assign, index) =>
+                        assign?.approved && (
+                          <li
+                            key={index}
+                            className="flex items-center mb-2 bg-gray-100 p-4 rounded-lg"
+                          >
+                            <CgProfile className="text-gray-500 mr-2" />
+                            <div>
+                              <p className="text-gray-600">
+                                Assigned By{" "}
+                                <strong className="text-gray-800">
+                                  {assign?.assignedBy?.name}
+                                </strong>
+                              </p>
+                              <p className="text-gray-600">
+                                Assigned To{" "}
+                                <strong className="text-gray-800">
+                                  {assign?.assignedTo?.name}
+                                </strong>
+                              </p>
+                            </div>
+                          </li>
+                        )
+                    )}
                   </ul>
-                  <div className='mt-4'>
-                    <label
-                      htmlFor='assignedTo'
-                      className='block font-bold text-gray-800 mb-2'
-                    >
-                      Assigned To:
-                    </label>
-                    <select
-                      type='text'
-                      id='assignedTo'
-                      value={assignedTo}
-                      onChange={e => setAssignedTo(e.target.value)}
-                      required
-                      className='w-full px-4 py-2 border border-gray-300 rounded bg-gray-100 text-gray-800'
-                    >
-                      <option value=''>Assigned To</option>
-                      {assignedUser &&
-                        assignedUser.map((user, index) => (
-                          <option value={user.value} key={index}>
-                            {user.name}
-                          </option>
-                        ))}
-                    </select>
+                  <div className="mt-4">
+                    <div>
+                      <label
+                        htmlFor="assignedTo"
+                        className="block font-bold mb-2"
+                      >
+                        Assigned To:
+                      </label>
+                      <select
+                        type="text"
+                        id="assignedTo"
+                        value={assignedTo}
+                        onChange={(e) =>
+                          setAssignedTo(e.target.value)
+                        }
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded"
+                      >
+                        <option value="">AssignedTo</option>
+                        {assignedUser &&
+                          assignedUser.map((item, index) => (
+                            <option value={item?._id} key={index}>
+                              {item?.name}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                     <button
-                      onClick={async e => {
-                        e.preventDefault()
-                        await handleAssign()
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        await handleAssign();
                       }}
-                      className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2'
+                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
                     >
                       Assign
                     </button>
@@ -420,14 +418,14 @@ const Task = ({ totalActiveTask }) => {
                     <input
                       type='text'
                       placeholder='Comment'
-                      value={comment}
-                      onChange={e => setComment(e.target.value)}
+                      value={newComment}
+                      onChange={e => setNewComment(e.target.value)}
                       className='flex-grow px-4 py-2 border border-gray-300 rounded bg-gray-100 text-gray-800 mr-2'
                     />
                     <button
                       onClick={async e => {
                         e.preventDefault()
-                        await addComment()
+                        await addComment(usertask?._id)
                       }}
                       className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
                     >
@@ -435,7 +433,7 @@ const Task = ({ totalActiveTask }) => {
                     </button>
                   </div>
                   <ul className='list-disc list-inside'>
-                    {taskinfo?.comment?.map((comments, index) => (
+                    {usertask?.comments?.map((comment, index) => (
                       <li
                         key={index}
                         className='mb-2 bg-gray-100 p-4 rounded-lg'
@@ -443,10 +441,10 @@ const Task = ({ totalActiveTask }) => {
                         <div className='text-gray-600'>
                           By{' '}
                           <strong className='text-gray-800'>
-                            {comments?.by?.username}
+                            {comment?.commentedBy?.username}
                           </strong>
                         </div>
-                        <div className='text-gray-700'>:- {comments?.data}</div>
+                        <div className='text-gray-700'>:- {comment?.data}</div>
                       </li>
                     ))}
                   </ul>

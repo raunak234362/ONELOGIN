@@ -273,7 +273,7 @@ const UserGroup = () => {
   
                     {/* Add New Field */}
                     
-  
+                    <p>*Username, Email, Name, Profile Img, Password fields are already exists.</p>
                     <div className='mb-2'>
                       <h4 className='font-semibold mb-2'>Add New Field</h4>
                       {/* Field Name Input */}

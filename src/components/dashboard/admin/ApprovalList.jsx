@@ -52,6 +52,7 @@ const ApprovalList = ({ toggleApprove }) => {
     // setTask(data?.assign?.assignedTo)
     alert("Task Approved")
     console.log(data);
+    await fetchTask();
   };
 
   useEffect(() => {
@@ -104,12 +105,7 @@ const ApprovalList = ({ toggleApprove }) => {
         </table>
       </div>
       <div className="flex flex-row w-1/2 mx-auto px-auto gap-5">
-        <button
-          onClick={approveTask}
-          className="mt-4 inline-block w-1/2 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-red-700"
-        >
-          Update
-        </button>
+     
 
         <button
           onClick={toggleApprove}
