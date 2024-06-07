@@ -45,7 +45,7 @@ const ProjectPie = ({ stage }) => {
     labels: ["Completed", "Approved", "On-Hold"],
     datasets: [
       {
-        data: [completed / 2, approved / 2, onHold / 2],
+        data: [completed , approved , onHold ],
         backgroundColor: ["#15803d", "#f97316", "#fbbf24"],
         hoverBackgroundColor: ["#15803d", "#f97316", "#fbbf24"],
       },

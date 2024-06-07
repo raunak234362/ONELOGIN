@@ -46,7 +46,7 @@ const PriorityPie = () => {
     labels: ["Critical", "High", "Medium", "Low"],
     datasets: [
       {
-        data: [critical/2, high/2, medium/2, low/2],
+        data: [critical, high, medium, low],
         backgroundColor: ["#ff0800", "#f97316", "#fbbf24", "#15803d"],
         hoverBackgroundColor: ["#ff0800", "#f97316", "#fbbf24", "#f87171"],
       },
