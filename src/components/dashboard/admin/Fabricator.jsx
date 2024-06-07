@@ -5,9 +5,7 @@ import { useEffect, useState } from 'react'
 import { FaUserPlus, FaUsers } from 'react-icons/fa'
 
 const Fabricator = ({ totalRegisteredFabricator }) => {
-  const [name, setName] = useState('')
-  const [client, setClient] = useState('')
-  const [clientnum, setClientNum] = useState('')
+  const [formData, setFormData] = useState()
   const [showForm, setShowForm] = useState(false)
   const [info, setInfo] = useState([])
   const [totalfabricator,setTotalFabricator]=useState([])
@@ -37,10 +35,27 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
     
   }
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    setName('')
-    setClient('')
+  const handleSubmit = async () => {
+ 
+    const myHeaders = new Headers()
+    myHeaders.append('Authorization', `Bearer ${localStorage.getItem('access')}`)
+    myHeaders.append('Content-Type', 'application/json') // Add this line
+    
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify(formData),
+      redirect: 'follow'
+    }
+    console.log(requestOptions);
+    const response = await fetch(
+      'https://wbt-onelogin.onrender.com/api/v1/fabricator/create/',
+      requestOptions
+    )
+    const data = await response.json()
+    setFormData(data?.data)
+    console.log(data?.data)
   }
 
   useEffect(()=>{
@@ -77,7 +92,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
               <div className='bg-white p-6 rounded-lg shadow-md w-[50%]'>
                 <h2 className=' text-2xl font-bold mb-4'>Add Fabricator</h2>
                 <form
-                  onClick={handleSubmit}
+                  onSubmit={handleSubmit}
                   className='space-y-4 bg-slate-200 p-5 rounded-xl'
                 >
                   <div>
@@ -88,8 +103,8 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
                       type='text'
                       id='name'
                       placeholder='Project Name'
-                      value={name}
-                      onChange={e => setName(e.target.value)}
+                      value={formData?.fabricatorName}
+                      onChange={(e) => setFormData({...formData,fabricatorName: e.target.value})}
                       required
                       className='w-full border border-gray-300 rounded-md px-3 py-2'
                     />
@@ -102,8 +117,10 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
                       type='text'
                       id='client-name'
                       placeholder='Client Name'
-                      value={client}
-                      onChange={e => setClient(e.target.value)}
+                      value={formData?.clientName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, clientName: e.target.value })
+                      }
                       required
                       className='w-full border border-gray-300 rounded-md px-3 py-2'
                     />
@@ -116,8 +133,8 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
                       type='text'
                       id='clientnum'
                       placeholder='Client Number'
-                      value={clientnum}
-                      onChange={e => setClientNum(e.target.value)}
+                      value={formData?.clientPhone}
+                      onChange={(e) => setFormData({...formData ,clientPhone: e.target.value})}
                       required
                       className='w-full border border-gray-300 rounded-md px-3 py-2'
                     />

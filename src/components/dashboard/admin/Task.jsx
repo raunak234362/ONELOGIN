@@ -22,7 +22,7 @@ const Task = ({ totalActiveTask }) => {
   const [showTask, setShowTask] = useState(false);
   const [showUserTask, setShowUserTask] = useState(false);
   const [assignedTo, setAssignedTo] = useState("");
-  const [newComment, setNewComment] = useState("NEW COMMENT ");
+  const [newComment, setNewComment] = useState("");
   const [comment, setComment] = useState("");
   const [modifyTask, setModifyTask] = useState({});
   const [approval, setApproval] = useState(0);
@@ -38,6 +38,9 @@ const Task = ({ totalActiveTask }) => {
   const toggleApprove = () => {
     setShowApprove(!showApprove);
   };
+  const toggleShowTask = (index)=>{
+    setShowUserTask(index)
+  }
 
   const fetchTask = async () => {
     const myHeaders = new Headers();
@@ -248,11 +251,12 @@ const Task = ({ totalActiveTask }) => {
   const handleModifyClick = (index) => {
     const projectData = taskinfo[index];
     setModifyTask({
-      name: projectData.name,
-      type: projectData.type,
-      assignedTo: projectData.assignedTo,
-      department: projectData.department,
-      status: projectData.status,
+      title: projectData?.title,
+      description: projectData?.description,
+      priority: projectData?.priority,
+      startDate: projectData?.startDate,
+      dueDate: projectData?.dueDate,
+      status: projectData?.status,
     });
     setPopupRowIndex(index);
     setPopupVisible(!popupVisible);
@@ -752,7 +756,7 @@ const Task = ({ totalActiveTask }) => {
             </thead>
             <tbody>
               {taskinfo &&
-                taskinfo.map((item, index) => (
+                taskinfo?.map((item, index) => (
                   <tr key={index} className="bg-gray-100 hover:bg-gray-200">
                     <td className="py-2 px-4 border">{index + 1}</td>
                     <td className="py-2 px-4 border">
@@ -766,10 +770,31 @@ const Task = ({ totalActiveTask }) => {
                     <td className="py-2 px-4 border">
                       <button
                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => handleModifyClick(index)}
+                        onClick={() => toggleShowTask(index)}
                       >
                         View
                       </button>
+                      {showUserTask === index &&(
+                       <div className='absolute top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-10 flex items-center justify-center'>
+                           <div
+                            className={`popup-menu absolute w-full bg-white rounded-lg shadow-lg p-4 ${
+                              showUserTask === index ? 'visible' : 'hidden'
+                            }`}>
+                            <h2 className='text-2xl font-bold mb-4'>Task</h2>
+                            <h1>{item?.title}</h1>
+                            <h1>{item?.project?.name}</h1>
+                            <h1>{item?.description}</h1>
+                            <h1>{item?.startDate}</h1>
+                            <h1>{item?.dueDate}</h1>
+                            <h1>{item?.assignedUser?.username}</h1>
+                            
+                            <button
+                            className="modify-btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                            onClick={()=>toggleShowTask()}
+                            >Close</button>
+                            </div>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
