@@ -194,7 +194,7 @@ const Dashboard = ({ totalUsers}) => {
 
   const StatuspieData = [[10, 20, 30]]
 
-  const StageInfo = ['IFA', 'BFA', 'RIFA', 'BFA', 'IFC', 'REV'];
+  const StageInfo = ['IFA', 'BFA', 'RIFA', 'RBFA', 'IFC', 'REV'];
 
   return (
     <div className='dashboard-container p-5'>
