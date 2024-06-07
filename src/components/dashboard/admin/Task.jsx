@@ -13,6 +13,7 @@ const Task = ({ totalActiveTask }) => {
   const [taskinfo, setTaskinfo] = useState([]);
   const [taskId, setTaskId] = useState();
   const [projInfo, setProjInfo] = useState([]);
+  const [projFilterInfo, setProjFilterInfo] = useState([]);
   const [users, setUsers] = useState([]);
   const [usertask, setUserTask] = useState({});
   const [assignedUser, setAssignedUser] = useState([]);
@@ -28,6 +29,9 @@ const Task = ({ totalActiveTask }) => {
   const [approval, setApproval] = useState(0);
   const [showApprove, setShowApprove] = useState(false);
   const [remainTask, setRemainTask] = useState();
+  const [formFabricators, setFormFabricators] = useState([]);
+  const [dropFrab, setDropFrab] = useState();
+  const [dropProj, setDropProj] = useState();
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -75,8 +79,20 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
 
+    let url = "https://wbt-onelogin.onrender.com/api/v1/task/all"
+
+    if (dropFrab?.trim() != "" && dropFrab) {
+      url += `?fabricator=${dropFrab}`
+    }
+
+    if (dropProj?.trim() != "" && dropProj) {
+      url += (dropFrab?.trim() != "" && dropFrab) ? `&project=${dropProj}` : `?project=${dropProj}`
+    }
+
+    console.log(url);
+
     await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/task/all",
+      url,
       requestOptions
     )
       .then(async (response) => {
@@ -132,7 +148,10 @@ const Task = ({ totalActiveTask }) => {
     );
     const data = await response.json();
     setProjInfo(data?.data);
-    console.log(data);
+    const dataMapped = data?.data?.map((item) => {
+      return { label: item.name, value: item._id };
+    });
+    setProjFilterInfo(dataMapped);
   };
 
   const fetchUsers = async () => {
@@ -155,6 +174,31 @@ const Task = ({ totalActiveTask }) => {
 
     const data = await response.json();
     setUsers(data?.data);
+  };
+  const fetchFabricators = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("access")}`
+    );
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    const response = await fetch(
+      "https://wbt-onelogin.onrender.com/api/v1/fabricator/all/",
+      requestOptions
+    );
+
+    const data = await response.json();
+    const dataMapped = data?.data.map((item) => ({
+      label: item.name,
+      value: item._id,
+    }));
+    setFormFabricators(dataMapped);
   };
 
   const handleAssign = async () => {
@@ -303,11 +347,16 @@ const Task = ({ totalActiveTask }) => {
 
   useEffect(() => {
     fetchTaskData();
+    fetchFabricators();
     fetchUserTask();
     fetchProject();
     fetchTask();
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    fetchTaskData();
+  }, [dropFrab, dropProj])
 
   return (
     <div className="p-5">
@@ -709,34 +758,34 @@ const Task = ({ totalActiveTask }) => {
             <select
               type="text"
               id="department"
-              // value={dropDept}
-              // onChange={async e => {
-              //   await setDropDept(e.target.value)
-              // }}
-              // required
+             onChange={(e) => {
+              setDropFrab(e.target.value)
+             }}
               className="border border-gray-300 rounded-md px-3 py-2"
             >
               <option value="">Select Fabricator</option>
-              <option value="">Fabricator-1</option>
-              <option value="">Fabricator-2</option>
-              <option value="">Fabricator-3</option>
-              <option value="">Fabricator-4</option>
+              {formFabricators?.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
             </select>
             <select
               type="text"
-              id="department"
-              // value={dropDept}
-              // onChange={async e => {
-              //   await setDropDept(e.target.value)
-              // }}
-              // required
+              id="project"
+              onChange={(e) => {
+                setDropProj(e.target.value)
+              }}
               className="border border-gray-300 rounded-md px-3 py-2"
             >
               <option value="">Select Project</option>
-              <option value="">Project-1</option>
-              <option value="">Project-2</option>
-              <option value="">Project-3</option>
-              <option value="">Project-4</option>
+              {
+                projFilterInfo?.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))
+              }
             </select>
             <div>
               <button

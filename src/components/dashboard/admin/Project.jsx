@@ -36,6 +36,7 @@ const Project = () => {
   const [detailerUsers, setDetailerUsers] = useState([]);
   const [erector, setErector] = useState(null);
   const [erectorUsers, setErectorUsers] = useState([]);
+  const [dropFrab, setDropFrab] = useState();
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -151,6 +152,7 @@ const Project = () => {
       label: item.name,
       value: item._id,
     }));
+    // console.log(dataMapped);
     setFormFabricators(dataMapped);
   };
   const fetchProjectData = async () => {
@@ -167,10 +169,13 @@ const Project = () => {
       redirect: "follow",
     };
 
-    const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/project/all/",
-      requestOptions
-    ).then(async (response) => {
+    let url = "https://wbt-onelogin.onrender.com/api/v1/project/all/";
+
+    if (dropFrab?.trim() != "" && dropFrab) {
+      url += `?fabricator=${dropFrab}`
+    }
+
+    await fetch(url, requestOptions).then(async (response) => {
       const data = await response.json();
       setProjectData(data?.data);
       setTotalProject(data?.data.length);
@@ -206,7 +211,12 @@ const Project = () => {
 
   useEffect(() => {
     fetchProjectData();
+    fetchFabricators();
   }, []);
+
+  useEffect(() => {
+    fetchProjectData();
+  }, [dropFrab])
 
   const projecttitles = ["IFA", "BFA", "R-IFA", "RBFA", "IFC", "REV"];
 
@@ -841,7 +851,7 @@ const Project = () => {
           <div className="flex flex-row justify-around gap-5 mb-8 overflow-x-auto w-full">
             {StageInfo?.map((item, index) => (
               <>
-                <ProjectPie stage={item} />
+                <ProjectPie stage={item} key={index}/>
               </>
             ))}
           </div>
@@ -855,18 +865,17 @@ const Project = () => {
                 <select
                   type="text"
                   id="department"
-                  // value={dropDept}
-                  // onChange={async e => {
-                  //   await setDropDept(e.target.value)
-                  // }}
-                  // required
+                  onChange={(e) => {
+                    setDropFrab(e.target.value);
+                  }}
                   className="border border-gray-300 rounded-md px-3 py-2"
                 >
                   <option value="">Select Fabricator</option>
-                  <option value="">Fabricator-1</option>
-                  <option value="">Fabricator-2</option>
-                  <option value="">Fabricator-3</option>
-                  <option value="">Fabricator-4</option>
+                  {formFabricators?.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
                 </select>
                 <div>
                   <button
