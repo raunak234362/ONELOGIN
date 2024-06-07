@@ -27,7 +27,7 @@ const Task = ({ totalActiveTask }) => {
   const [modifyTask, setModifyTask] = useState({});
   const [approval, setApproval] = useState(0);
   const [showApprove, setShowApprove] = useState(false);
-  const [remainTask, setRemainTask] = useState()
+  const [remainTask, setRemainTask] = useState();
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -38,9 +38,9 @@ const Task = ({ totalActiveTask }) => {
   const toggleApprove = () => {
     setShowApprove(!showApprove);
   };
-  const toggleShowTask = (index)=>{
-    setShowUserTask(index)
-  }
+  const toggleShowTask = (index) => {
+    setShowUserTask(index);
+  };
 
   const fetchTask = async () => {
     const myHeaders = new Headers();
@@ -61,7 +61,6 @@ const Task = ({ totalActiveTask }) => {
     setRemainTask(data?.data?.length);
     console.log(data?.data);
   };
-
 
   const fetchTaskData = async () => {
     const myHeaders = new Headers();
@@ -248,18 +247,31 @@ const Task = ({ totalActiveTask }) => {
       .catch((error) => console.error(error));
   };
 
-  const handleModifyClick = (index) => {
-    const projectData = taskinfo[index];
-    setModifyTask({
-      title: projectData?.title,
-      description: projectData?.description,
-      priority: projectData?.priority,
-      startDate: projectData?.startDate,
-      dueDate: projectData?.dueDate,
-      status: projectData?.status,
-    });
+  const handleModifyClick = async (index) => {
+    const myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("access")}`
+    );
+    myHeaders.append("Content-Type", "application/json"); // Add this line
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify(modifyTask),
+      redirect: "follow",
+    };
+    console.log(modifyTask);
+
+    const response = await fetch(
+      `https://wbt-onelogin.onrender.com/api/v1/task/${index}/update/`,
+      requestOptions
+    );
+    console.log(index);
+    const data = await response.json();
     setPopupRowIndex(index);
     setPopupVisible(!popupVisible);
+    handleModifyClick();
   };
 
   const handleSubmit = async (e) => {
@@ -276,19 +288,18 @@ const Task = ({ totalActiveTask }) => {
       headers: myHeaders,
       body: JSON.stringify(addTask),
       redirect: "follow",
-      
     };
     console.log(requestOptions);
-    console.log(addTask)
+    console.log(addTask);
 
-    const response = await fetch( `https://wbt-onelogin.onrender.com/api/v1/task/create`, requestOptions);
+    const response = await fetch(
+      `https://wbt-onelogin.onrender.com/api/v1/task/create`,
+      requestOptions
+    );
     const data = await response.json();
     // setAddTask(data?.data);
     console.log(response);
-
   };
-
-  
 
   useEffect(() => {
     fetchTaskData();
@@ -301,7 +312,6 @@ const Task = ({ totalActiveTask }) => {
   return (
     <div className="p-5">
       <div className="flex flex-row justify-around gap-2 mb-8">
-       
         {/* Total Verified Users */}
         <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
           <FaTasks className="text-4xl text-gray-500 mb-2" />
@@ -318,7 +328,6 @@ const Task = ({ totalActiveTask }) => {
             Approval Remaining
           </h3>
           <p className="text-3xl font-bold text-gray-800">{remainTask}</p>
-          
         </div>
         {/* Approval List */}
         <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
@@ -327,14 +336,16 @@ const Task = ({ totalActiveTask }) => {
             Approval List
           </h3>
           <button
-          onClick={toggleApprove}
-          className="mt-4 inline-block bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
-          >Show</button>
+            onClick={toggleApprove}
+            className="mt-4 inline-block bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+          >
+            Show
+          </button>
           {showApprove && (
             <div className="absolute top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center">
-              <ApprovalList toggleApprove={toggleApprove}/>
-              </div>
-              )}
+              <ApprovalList toggleApprove={toggleApprove} />
+            </div>
+          )}
         </div>
         {/* My Task */}
         <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
@@ -447,9 +458,7 @@ const Task = ({ totalActiveTask }) => {
                         type="text"
                         id="assignedTo"
                         value={assignedTo}
-                        onChange={(e) =>
-                          setAssignedTo(e.target.value)
-                        }
+                        onChange={(e) => setAssignedTo(e.target.value)}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded"
                       >
@@ -516,7 +525,6 @@ const Task = ({ totalActiveTask }) => {
               </div>
             </div>
           )}
-         
         </div>
         {/* Add New Task */}
         <div className="flex flex-col items-center bg-white p-6 rounded-xl shadow-md w-[25%]">
@@ -554,7 +562,8 @@ const Task = ({ totalActiveTask }) => {
                       {projInfo &&
                         projInfo.map((item, index) => (
                           <option value={item?._id} key={index}>
-                            {item?.name}{item?.number}
+                            {item?.name}
+                            {item?.number}
                           </option>
                         ))}
                     </select>
@@ -774,25 +783,213 @@ const Task = ({ totalActiveTask }) => {
                       >
                         View
                       </button>
-                      {showUserTask === index &&(
-                       <div className='absolute top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-10 flex items-center justify-center'>
-                           <div
-                            className={`popup-menu absolute w-full bg-white rounded-lg shadow-lg p-4 ${
-                              showUserTask === index ? 'visible' : 'hidden'
-                            }`}>
-                            <h2 className='text-2xl font-bold mb-4'>Task</h2>
-                            <h1>{item?.title}</h1>
-                            <h1>{item?.project?.name}</h1>
-                            <h1>{item?.description}</h1>
-                            <h1>{item?.startDate}</h1>
-                            <h1>{item?.dueDate}</h1>
-                            <h1>{item?.assignedUser?.username}</h1>
-                            
-                            <button
-                            className="modify-btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                            onClick={()=>toggleShowTask()}
-                            >Close</button>
+                      {showUserTask === index && (
+                        <div className="absolute top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-10 flex items-center justify-center">
+                          <div
+                            className={`popup-menu absolute w-1/2 bg-white rounded-lg shadow-lg p-4 ${
+                              showUserTask === index ? "visible" : "hidden"
+                            }`}
+                          >
+                            <h1 className="text-3xl mx-auto text-center bg-green-500 rounded-xl text-white w-1/2 my-5">Update Task</h1>
+                            <div>
+                              <label
+                                htmlFor="assignedTo"
+                                className="block font-bold mb-2 text-left"
+                              >
+                                Project Name:
+                              </label>
+                              <input
+                                type="text"
+                                value={item?.project?.name}
+                                disabled
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              />
                             </div>
+                            <div>
+                              <label
+                                htmlFor="assignedTo"
+                                className="block font-bold mb-2 text-left"
+                              >
+                                Task Title
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Task Title"
+                                value={modifyTask?.title || item?.title}
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value?.trim() !== "" &&
+                                    e.target.value !== undefined
+                                  ) {
+                                    setModifyTask({
+                                      ...modifyTask,
+                                      title: e.target.value,
+                                    });
+                                  }
+                                }}
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              />
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor="assignedTo"
+                                className="block font-bold mb-2 text-left"
+                              >
+                                Task Description:
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Task Description"
+                                value={
+                                  modifyTask?.description || item?.description
+                                }
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value?.trim() !== "" &&
+                                    e.target.value !== undefined
+                                  ) {
+                                    setModifyTask({
+                                      ...modifyTask,
+                                      description: e.target.value,
+                                    });
+                                  }
+                                }}
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              />
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor="assignedTo"
+                                className="block font-bold mb-2 text-left"
+                              >
+                                Start Date:
+                              </label>
+                              <input
+                                type="date"
+                                value={
+                                  modifyTask?.startDate ||
+                                  item?.startDate?.substring(0, 10)
+                                }
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value?.trim() !== "" &&
+                                    e.target.value !== undefined
+                                  ) {
+                                    setModifyTask({
+                                      ...modifyTask,
+                                      startDate: e.target.value,
+                                    });
+                                  }
+                                }}
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              />
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor="assignedTo"
+                                className="block font-bold mb-2 text-left"
+                              >
+                                Due Date:
+                              </label>
+                              <input
+                                type="date"
+                                value={
+                                  modifyTask?.dueDate ||
+                                  item?.dueDate?.substring(0, 10)
+                                }
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value?.trim() !== "" &&
+                                    e.target.value !== undefined
+                                  ) {
+                                    setModifyTask({
+                                      ...modifyTask,
+                                      dueDate: e.target.value,
+                                    });
+                                  }
+                                }}
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              />
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor="assignedTo"
+                                className="block font-bold mb-2 text-left"
+                              >
+                                Task Status
+                              </label>
+                              <select
+                                type="text"
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                                value={modifyTask?.status || item?.status}
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value?.trim() !== "" &&
+                                    e.target.value !== undefined
+                                  ) {
+                                    setModifyTask({
+                                      ...modifyTask,
+                                      status: e.target.value,
+                                    });
+                                  }
+                                }}
+                              >
+                                <option value="">Select Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="in progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="on hold">On Hold</option>
+                              </select>
+                            </div>
+
+                            <div>
+                            <label
+                              htmlFor="assignedTo"
+                              className="block font-bold mb-2 text-left"
+                            >
+                              Task Priority
+                            </label>
+                            <select
+                              type="text"
+                              value={modifyTask?.priority || item?.priority}
+                              onChange={(e) => {
+                                if (
+                                  e.target.value?.trim() !== "" &&
+                                  e.target.value !== undefined
+                                ) {
+                                  setModifyTask({
+                                    ...modifyTask,
+                                    priority: e.target.value,
+                                  });
+                                }
+                              }}
+                              className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                            >
+                              <option value="">Select Priority</option>
+                              <option value="4">Critical</option>
+                              <option value="3">High</option>
+                              <option value="2">Medium</option>
+                              <option value="1">Low</option>
+                            </select>
+                            </div>
+
+                            <div className="flex flex-row gap-5">
+                              <button
+                                className="modify-btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                                onClick={() => handleModifyClick(item?._id)}
+                              > Update</button>
+                              <button
+                                className="modify-btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                onClick={() => toggleShowTask()}
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </td>
