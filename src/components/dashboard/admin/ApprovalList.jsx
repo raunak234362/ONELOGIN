@@ -13,7 +13,6 @@ const ApprovalList = ({ toggleApprove }) => {
 
   const [task, setTask] = useState();
   const [showTask, setShowTask] = useState(false);
-  const [newComment, setNewComment] = useState("");
   const [comment, setComment] = useState("");
 
   const toggleShowTask = (index) => {
@@ -28,7 +27,7 @@ const ApprovalList = ({ toggleApprove }) => {
     );
     myHeaders.append("Content-Type", "application/json");
 
-    const raw = JSON.stringify({ text: newComment });
+    const raw = JSON.stringify({ text: comment });
 
     const requestOptions = {
       method: "POST",
@@ -44,8 +43,7 @@ const ApprovalList = ({ toggleApprove }) => {
     )
       .then(async (response) => {
         const data = await response.json();
-        setNewComment("");
-        await fetchTask();
+        console.log(data);
       })
       .catch((error) => console.error(error));
   };
@@ -93,37 +91,10 @@ const ApprovalList = ({ toggleApprove }) => {
     );
     const data = await response.json();
     // setTask(data?.assign?.assignedTo)
+    await addComment(taskId);
     alert("Task Approved");
     console.log(data);
     await fetchTask();
-    
-    const myHeaders1 = new Headers();
-    myHeaders.append(
-      "authorization",
-      `Bearer ${localStorage.getItem("access")}`
-    );
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({ text: comment });
-
-    const requestOptions1 = {
-      method: "POST",
-      headers: myHeaders1,
-      body: raw,
-      redirect: "follow",
-    };
-    // console.log(requestOptions);
-
-    await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/addComment/`,
-      requestOptions1
-    )
-      .then(async (response) => {
-        const data = await response.json();
-        setComment("");
-        await fetchTask();
-      })
-      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
