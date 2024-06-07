@@ -6,6 +6,8 @@ import { CgProfile } from "react-icons/cg";
 import { FaTasks, FaUserPlus, FaUsers } from "react-icons/fa";
 import { MdOutlinePendingActions } from "react-icons/md";
 import ApprovalList from "./ApprovalList";
+import PriorityPie from "./PriorityPie";
+import StatusPie from "./StatusPie";
 
 const Task = ({ totalActiveTask }) => {
   const [addTask, setAddTask] = useState({});
@@ -750,6 +752,21 @@ const Task = ({ totalActiveTask }) => {
           )}
         </div>
       </div>
+
+      <div className='bg-white p-5 flex flex-col justify-center mb-6 rounded-xl'>
+          <h1 className='text-center text-2xl mb-5 font-semibold'>Task</h1>
+          <div className='flex flex-row gap-9 mb-8 w-[100%] justify-center mx-0'>
+            {/* <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
+            <FabricatorPieChart data={FabricatorpieData[0]} />
+            </div> */}
+            <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
+              <PriorityPie />
+            </div>
+            <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
+            <StatusPie />
+            </div>
+          </div>
+        </div>
 
       <div className="bg-white p-5 rounded-xl drop-shadow-md">
         <h2 className="text-2xl font-bold mb-4">Task</h2>
