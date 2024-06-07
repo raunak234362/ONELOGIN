@@ -275,7 +275,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
                               <input
                                 type="text"
                                 placeholder="Project Name"
-                                value={modifyFabricator?.clientNumber || item?.clientNumber}
+                                value={modifyFabricator?.clientPhone || item?.clientPhone}
               
                                 onChange={(e) => {
                                   if (
@@ -284,7 +284,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
                                   ) {
                                     setModifyFabricator({
                                       ...modifyFabricator,
-                                      clientNumber: e.target.value,
+                                      clientPhone: e.target.value,
                                     });
                                   }
                                 }}

@@ -99,7 +99,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
             <FaTools className="text-xl" />
             <span>Fabricator</span>
           </Link>
-          <Link
+          {/* <Link
             to="/admin/client"
             onClick={() => handleNavLinkClick("user")}
             className={`flex items-center gap-2 px-4 py-2 transition-colors duration-300 ${
@@ -110,7 +110,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
           >
             <ImOffice className="text-xl" />
             <span>Client</span>
-          </Link>
+          </Link> */}
           <Link
             to="/admin/project"
             onClick={() => handleNavLinkClick("project")}
