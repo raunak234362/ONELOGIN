@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FaUserPlus, FaUsers } from 'react-icons/fa'
 
@@ -9,6 +8,8 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
   const [showForm, setShowForm] = useState(false)
   const [info, setInfo] = useState([])
   const [totalfabricator,setTotalFabricator]=useState([])
+  const [modifyForm,setModifyForm]=useState(false)
+  const [modifyFabricator, setModifyFabricator] =useState()
 
   const toggleForm = () => {
     setShowForm(!showForm)
@@ -26,13 +27,37 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
     }
 
     const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/fabricator/all/',requestOptions)
-    
       const data = await response.json()
       setInfo(data?.data)
-      setTotalFabricator(data?.data.length)
-      
-      
-    
+      setTotalFabricator(data?.data?.length)
+
+  }
+
+  const handleModifyClick =async (index)=>{
+    const myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("access")}`
+    );
+    myHeaders.append("Content-Type", "application/json"); // Add this line
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify(modifyFabricator),
+      redirect: "follow",
+    };
+    console.log(modifyFabricator);
+
+    const response = await fetch(  `https://wbt-onelogin.onrender.com/api/v1/fabricator/${index}/update`,requestOptions );
+    console.log(index)
+    const data = await response.json();
+    setModifyFabricator(data?.data);
+  }
+
+
+  const toggleModifyForm=(index) =>{
+    setModifyForm(index)
   }
 
   const handleSubmit = async () => {
@@ -55,7 +80,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
     )
     const data = await response.json()
     setFormData(data?.data)
-    console.log(data?.data)
+    // console.log(data?.data)
   }
 
   useEffect(()=>{
@@ -161,7 +186,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
       <div className='active-user bg-white rounded-xl p-5 drop-shadow-md '>
         <h2 className='text-2xl font-bold mb-4'>Fabricator</h2>
       
-        <div className=' h-80 table-container overflow-y-auto'>
+        <div className=' h-96 table-container overflow-y-auto'>
           <table className='w-full table-auto border-collapse text-center'>
             <thead>
               <tr className='bg-gray-200'>
@@ -181,9 +206,105 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
                     <td className='px-4 py-2 border'>{item?.clientName}</td>
                     <td className='px-4 py-2 border'>{item?.clientPhone}</td>
                     <td className='px-4 py-2 border'>
-                      <button className='modify-btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
+                      <button 
+                      className='modify-btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+                      onClick={()=>toggleModifyForm(index)}
+                      >
                         Modify
                       </button>
+                      {
+                        modifyForm === index &&(
+                          <div className='absolute top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center'>
+                            <div
+                            className={`popup-menu mb-5 bottom-0 w-1/2 h-full bg-white rounded-lg shadow-lg my-5 p-4 ${
+                              modifyForm === index ? "visible" : "hidden"
+                            }`}
+                          >
+                            <p className='text-center text-2xl font-bold'>Edit Fabricator</p>
+                            <label
+                                className="block font-bold mb-2 text-left"
+                              >
+                              Fabricator Name:
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Project Name"
+                                value={modifyFabricator?.name || item?.name}
+                                
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value?.trim() !== "" &&
+                                    e.target.value !== undefined
+                                  ) {
+                                    setModifyFabricator({
+                                      ...modifyFabricator,
+                                      name: e.target.value,
+                                    });
+                                  }
+                                }}
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              />
+                            <label
+                                className="block font-bold mb-2 text-left"
+                              >
+                              Client Name:
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Project Name"
+                                value={modifyFabricator?.clientName || item?.clientName}
+                                
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value?.trim() !== "" &&
+                                    e.target.value !== undefined
+                                  ) {
+                                    setModifyFabricator({
+                                      ...modifyFabricator,
+                                      clientName: e.target.value,
+                                    });
+                                  }
+                                }}
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              />
+                            <label
+                                className="block font-bold mb-2 text-left"
+                              >
+                              Client Number:
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Project Name"
+                                value={modifyFabricator?.clientNumber || item?.clientNumber}
+              
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value?.trim() !== "" &&
+                                    e.target.value !== undefined
+                                  ) {
+                                    setModifyFabricator({
+                                      ...modifyFabricator,
+                                      clientNumber: e.target.value,
+                                    });
+                                  }
+                                }}
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              />
+                            <button
+                            className='modify-btn w-full bg-green-500 mt-5 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+                            onClick={()=>handleModifyClick(item?._id)}
+                            >
+                              Update
+                            </button>
+                            <button
+                            className='modify-btn w-full bg-red-500 mt-5 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                            onClick={()=>toggleModifyForm()}
+                            >Close</button>
+                           
+                          </div>
+                          </div>
+                        )
+                      }
                     </td>
                   </tr>
                 ))}

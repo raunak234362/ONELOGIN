@@ -13,50 +13,38 @@ const Project = () => {
 
   const [popupRowIndex, setPopupRowIndex] = useState(-1)
   const [popupVisible, setPopupVisible] = useState(false)
-  const [showForm, setShowForm] = useState(false)
+  const [showProject, setShowProject] = useState(false)
   const [modifyProject, setModifyProject] = useState({
-    name: '',
-    type: '',
-    assignedTo: '',
-    department: '',
-    status: '',
-    number: ''
+    // name: '',
+    // type: '',
+    // assignedTo: '',
+    // department: '',
+    // status: '',
+    // number: ''
   })
   const [totalproject, setTotalProject]=useState([])
   const [formFabricators, setFormFabricators] = useState([])
   const [formUserGroups, setFormUserGroups] = useState([])
-  const [teamLead, setTeamLead] = useState(null)
-  const [teamLeadUsers, setTeamLeadUsers] = useState([])
-  const [modeler, setModeler] = useState(null)
-  const [modelerUsers, setModelerUsers] = useState([])
   const [checker, setChecker] = useState(null)
   const [checkerUsers, setCheckerUsers] = useState([])
   const [detailer, setDetailer] = useState(null)
   const [detailerUsers, setDetailerUsers] = useState([])
   const [erector, setErector] = useState(null)
+  const [teamLead, setTeamLead] = useState(null)
+  const [modeler, setModeler] = useState(null)
+  const [modelerUsers, setModelerUsers] = useState([])
+  const [teamLeadUsers, setTeamLeadUsers] = useState([])
   const [erectorUsers, setErectorUsers] = useState([])
 
 
-  const toggleForm = () => {
-    setShowForm(!showForm);
-    setFormStep(1);
-    fetchFabricators();
-    fetchUserGroups();
+  const toggleForm = (index) => {
+    if(showProject ===index){
+      setShowProject(null);
+    }else{
+      setShowProject(index);
+    }
   }
 
-  const handleModifyClick = index => {
-    // const projectData = formData.projinfoinfo[index]
-    // setModifyProject({
-    //   name: projectData.name,
-    //   type: projectData.type,
-    //   assignedTo: projectData.assignedTo,
-    //   department: projectData.department,
-    //   status: projectData.status,
-    //   number: projectData.number
-    // })
-    // setPopupRowIndex(index)
-    // setPopupVisible(!popupVisible)
-  }
 
   const fetchUserGroups = async() => {
     const myHeaders = new Headers()
@@ -146,29 +134,7 @@ const Project = () => {
     
   }
 
-  const handleSubmit = async () => {
-
-    const myHeaders = new Headers()
-    myHeaders.append('Authorization', `Bearer ${localStorage.getItem('access')}`)
-    myHeaders.append('Content-Type', 'application/json') // Add this line
-    
-
-    const requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify(formData),
-      redirect: 'follow'
-    }
-
-    const response = await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/project/create/',
-      requestOptions
-    )
-
-    const data = await response.json();
-    console.log(data)
-  }
-
+  
   const ProjectPieChart = ({ data, title }) => {
     const chartData = {
       labels: ['Completed', 'Approved', 'On-Hold'],
@@ -278,7 +244,7 @@ const Project = () => {
               </thead>
               <tbody>
                 {projectData &&
-                  projectData.map((item, index) => (
+                  projectData?.map((item, index) => (
                     <tr key={index} className='bg-gray-100 hover:bg-gray-200'>
                       <td className='px-1 py-2 border'>{index + 1}</td>
                       <td className='px-4 py-2 border'>{item?.fabricator?.name}</td>
@@ -288,11 +254,54 @@ const Project = () => {
                       <td className='px-4 py-2 border'>
                         <button
                           className='modify-btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
-                          // onClick={() => handleModifyClick(index)}
+                          onClick={() => toggleForm(index)}
                         >
-                          Open
+                          {showProject ===index ? 'Close' : 'Open'}
                         </button>
-                        
+                        {
+                          showProject === index && (
+                            <div className='absolute right-0 text-left bg-white p-5 rounded-xl shadow-md'>
+                              <h1 className='text-center text-2xl mb-4 font-semibold'>Project</h1>
+                              {/* <div className='flex flex-row justify-around gap-5 mb-8 overflow-x-auto w-full'>
+                                <div
+                                  className='bg-white p-5 rounded-xl shadow-xl shadow-green-200 w-60 mb-0'
+                                >
+                                  <ProjectPieChart data={[10, 20, 30]} title='IFA' />
+                                </div>
+                                <div
+                                  className='bg-white p-5 rounded-xl shadow-xl shadow-green-200 w-60 mb-0'
+                                >
+                                  <ProjectPieChart data={[15, 25, 35]} title='BFA' />
+                                </div>
+                                <div
+                                  className='bg-white p-5 rounded-xl shadow-xl shadow-green-200 w-60 mb-0'
+                                >
+                                  <ProjectPieChart data={[20, 30, 40]} title='R-IFA' />
+                                </div>
+                                <div
+                                  className='bg-white p-5 rounded-xl shadow-xl shadow-green-200 w-60 mb-0'
+                                >
+                                  <ProjectPieChart data={[25, 35, 45]} title='BFA' />
+                                </div>
+                                <div
+                                  className='bg-white p-5 rounded-xl shadow-xl shadow-green-200 w-60 mb-0'
+                                >
+                                  <ProjectPieChart data={[30, 40, 50]} title='IFC' />
+                                </div>
+                                <div
+                                  className='bg-white p-5 rounded-xl shadow-xl shadow-green-200 w-60 mb-0'
+                                >
+                                  <ProjectPieChart data={[35, 45, 55]} title='REV' />
+                                </div>
+                              </div> */}
+                              <p className='text-xl font-bold text-gray-800'>Project Name: <span className='font-normal'>{item?.name}</span></p>
+                              <p className='text-xl font-bold text-gray-800'>Team Leader: <span className='font-normal'>{item?.teamLeader?.name}</span></p>
+                              <p className='text-xl font-bold text-gray-800'>Project Stage: <span className='font-normal'>{item?.stage}</span></p>
+                              <p className='text-xl font-bold text-gray-800'>Project Status: <span className='font-normal'>{item?.status}</span></p>
+                              <p className='text-xl font-bold text-gray-800'>Project Description: <span className='font-normal'>{item?.description}</span></p>
+                            </div>
+                          )
+                        }
                       </td>
                     </tr>
                   ))}

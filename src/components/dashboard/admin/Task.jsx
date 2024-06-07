@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { Search } from "lucide-react";
@@ -850,9 +851,9 @@ const Task = ({ totalActiveTask }) => {
                         View
                       </button>
                       {showUserTask === index && (
-                        <div className="absolute top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-10 flex items-center justify-center">
+                        <div className="absolute mb-5 top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-10 flex items-center justify-center">
                           <div
-                            className={`popup-menu absolute w-1/2 bg-white rounded-lg shadow-lg p-4 ${
+                            className={`popup-menu mb-5 bottom-0 absolute w-1/2 bg-white rounded-lg shadow-lg p-4 ${
                               showUserTask === index ? "visible" : "hidden"
                             }`}
                           >

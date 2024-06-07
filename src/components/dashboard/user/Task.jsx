@@ -27,10 +27,16 @@ const Task = ({ totalActiveTask }) => {
     department: '',
     status: ''
   })
+  const [task,setTask]=useState(false)
 
-  const toggleForm = () => {
-    setShowForm(!showForm)
+  const toggleTaskShow = (index) => {
+    if(task ===index){
+      setTask(null);
+    } else{
+      setTask(index);
+    }
   }
+
   const toggleTask = () => {
     setShowTask(!showTask)
   }
@@ -517,7 +523,7 @@ const Task = ({ totalActiveTask }) => {
             </div>
           </div>
         </div>
-        <div className='overflow-y-auto h-80 table-container'>
+        <div className='overflow-y-auto h-[50vh] table-container'>
           <table className='w-full table-auto border-collapse text-center'>
             <thead>
               <tr className='bg-gray-200'>
@@ -531,24 +537,38 @@ const Task = ({ totalActiveTask }) => {
             </thead>
             <tbody>
               {taskinfo &&
-                taskinfo.map((item, index) => (
+                taskinfo?.map((item, index) => (
                   <tr key={index} className='bg-gray-100 hover:bg-gray-200'>
                     <td className='py-2 px-4 border'>{index + 1}</td>
                     <td className='py-2 px-4 border'>
                       {item?.project?.fabricator?.name}
                     </td>
                     <td className='py-2 px-4 border'>{item?.title}</td>
-                    <td className='py-2 px-4 border'>{item?.title}</td>
+                    <td className='py-2 px-4 border'>{item?.project?.name}</td>
+
+
                     <td className='py-2 px-4 border'>
                       {item?.currentUser?.username}
                     </td>
                     <td className='py-2 px-4 border'>
                       <button
                         className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
-                        onClick={() => handleModifyClick(index)}
+                        onClick={() => toggleTaskShow(index)}
                       >
-                        Open
+                        {task === index ? 'Close' : 'Open'}
                       </button>
+                      {
+                        task === index && (
+                          <div className='absolute right-0 text-left bg-white p-5 rounded-xl shadow-md'>
+                              <h1 className='text-center text-2xl mb-4 font-semibold my-10'>{item?.title}</h1>
+                              <p className='text-xl font-bold text-gray-800'>Fabricator Name: <span className='font-normal'>{item?.project?.fabricator?.name}</span></p>
+                              <p className='text-xl font-bold text-gray-800'>Current User: <span className='font-normal'>{item?.currentUser?.name}</span></p>
+                              <p className='text-xl font-bold text-gray-800'>Status: <span className='font-normal'>{item?.status}</span></p>
+                              <p className='text-xl font-bold text-gray-800'>Description: <span className='font-normal'>{item?.description}</span></p>
+                              
+                          </div>
+                        )
+                      }
                     </td>
                   </tr>
                 ))}
