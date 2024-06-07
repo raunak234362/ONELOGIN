@@ -42,7 +42,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
     myHeaders.append("Content-Type", "application/json"); // Add this line
 
     const requestOptions = {
-      method: "POST",
+      method: "PUT",
       headers: myHeaders,
       body: JSON.stringify(modifyFabricator),
       redirect: "follow",
