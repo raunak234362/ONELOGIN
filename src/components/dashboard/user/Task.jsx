@@ -450,7 +450,7 @@ const Task = ({ totalActiveTask }) => {
                             {comment?.commentedBy?.username}
                           </strong>
                         </div>
-                        <div className='text-gray-700'>:- {comment?.data}</div>
+                        <div className='text-gray-700'>:- {comment?.text}</div>
                       </li>
                     ))}
                   </ul>
