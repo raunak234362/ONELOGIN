@@ -271,7 +271,7 @@ const Task = ({ totalActiveTask }) => {
     const data = await response.json();
     setPopupRowIndex(index);
     setPopupVisible(!popupVisible);
-    handleModifyClick();
+    await fetchTaskData();
   };
 
   const handleSubmit = async (e) => {
@@ -790,7 +790,9 @@ const Task = ({ totalActiveTask }) => {
                               showUserTask === index ? "visible" : "hidden"
                             }`}
                           >
-                            <h1 className="text-3xl mx-auto text-center bg-green-500 rounded-xl text-white w-1/2 my-5">Update Task</h1>
+                            <h1 className="text-3xl mx-auto text-center bg-green-500 rounded-xl text-white w-1/2 my-5">
+                              Update Task
+                            </h1>
                             <div>
                               <label
                                 htmlFor="assignedTo"
@@ -801,6 +803,20 @@ const Task = ({ totalActiveTask }) => {
                               <input
                                 type="text"
                                 value={item?.project?.name}
+                                disabled
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              />
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="assignedTo"
+                                className="block font-bold mb-2 text-left"
+                              >
+                                Fabricator Name:
+                              </label>
+                              <input
+                                type="text"
+                                value={item?.project?.fabricator?.name}
                                 disabled
                                 className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
                               />
@@ -947,41 +963,44 @@ const Task = ({ totalActiveTask }) => {
                             </div>
 
                             <div>
-                            <label
-                              htmlFor="assignedTo"
-                              className="block font-bold mb-2 text-left"
-                            >
-                              Task Priority
-                            </label>
-                            <select
-                              type="text"
-                              value={modifyTask?.priority || item?.priority}
-                              onChange={(e) => {
-                                if (
-                                  e.target.value?.trim() !== "" &&
-                                  e.target.value !== undefined
-                                ) {
-                                  setModifyTask({
-                                    ...modifyTask,
-                                    priority: e.target.value,
-                                  });
-                                }
-                              }}
-                              className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
-                            >
-                              <option value="">Select Priority</option>
-                              <option value="4">Critical</option>
-                              <option value="3">High</option>
-                              <option value="2">Medium</option>
-                              <option value="1">Low</option>
-                            </select>
+                              <label
+                                htmlFor="assignedTo"
+                                className="block font-bold mb-2 text-left"
+                              >
+                                Task Priority
+                              </label>
+                              <select
+                                type="text"
+                                value={modifyTask?.priority || item?.priority}
+                                onChange={(e) => {
+                                  if (
+                                    e.target.value?.trim() !== "" &&
+                                    e.target.value !== undefined
+                                  ) {
+                                    setModifyTask({
+                                      ...modifyTask,
+                                      priority: e.target.value,
+                                    });
+                                  }
+                                }}
+                                className="mb-2 border border-gray-300 rounded-md px-3 py-2 w-full"
+                              >
+                                <option value="">Select Priority</option>
+                                <option value="4">Critical</option>
+                                <option value="3">High</option>
+                                <option value="2">Medium</option>
+                                <option value="1">Low</option>
+                              </select>
                             </div>
 
                             <div className="flex flex-row gap-5">
                               <button
                                 className="modify-btn bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                                 onClick={() => handleModifyClick(item?._id)}
-                              > Update</button>
+                              >
+                                {" "}
+                                Update
+                              </button>
                               <button
                                 className="modify-btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                                 onClick={() => toggleShowTask()}
