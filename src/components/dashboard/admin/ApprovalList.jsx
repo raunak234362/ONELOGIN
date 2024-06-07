@@ -109,7 +109,7 @@ const ApprovalList = ({ toggleApprove }) => {
 
         <button
           onClick={toggleApprove}
-          className="mt-4 inline-block w-1/2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-red-700"
+          className="mt-4 inline-block mx-auto w-1/2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-red-700"
         >
           Close
         </button>
