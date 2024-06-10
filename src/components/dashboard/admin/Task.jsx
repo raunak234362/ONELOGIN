@@ -35,6 +35,7 @@ const Task = ({ totalActiveTask }) => {
   const [formFabricators, setFormFabricators] = useState([]);
   const [dropFrab, setDropFrab] = useState();
   const [dropProj, setDropProj] = useState();
+  const [accept, setAccept] = useState("");
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -82,28 +83,50 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
 
-    let url = "https://wbt-onelogin.onrender.com/api/v1/task/all"
+    let url = "https://wbt-onelogin.onrender.com/api/v1/task/all";
 
     if (dropFrab?.trim() != "" && dropFrab) {
-      url += `?fabricator=${dropFrab}`
+      url += `?fabricator=${dropFrab}`;
     }
 
     if (dropProj?.trim() != "" && dropProj) {
-      url += (dropFrab?.trim() != "" && dropFrab) ? `&project=${dropProj}` : `?project=${dropProj}`
+      url +=
+        dropFrab?.trim() != "" && dropFrab
+          ? `&project=${dropProj}`
+          : `?project=${dropProj}`;
     }
 
     console.log(url);
 
-    await fetch(
-      url,
-      requestOptions
-    )
+    await fetch(url, requestOptions)
       .then(async (response) => {
         const data = await response.json();
         setTaskinfo(data?.data);
         setTotalTask(data?.data.length);
       })
       .catch((error) => console.error(error));
+  };
+
+  const handleAccept = async (taskId) => {
+    const myHeaders = new Headers();
+    myHeaders.append(
+      "authorization",
+      `Bearer ${localStorage.getItem("access")}`
+    );
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+    const response = await fetch(
+      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/accept`,
+      requestOptions
+    );
+    const data = await response.json();
+    setAccept(data?.data);
+    await fetchUserTask();
+    alert("Task Accepted Successfully,\n Start Working On the Task");
   };
 
   const fetchUserTask = async () => {
@@ -359,7 +382,7 @@ const Task = ({ totalActiveTask }) => {
 
   useEffect(() => {
     fetchTaskData();
-  }, [dropFrab, dropProj])
+  }, [dropFrab, dropProj]);
 
   return (
     <div className="p-5">
@@ -412,168 +435,193 @@ const Task = ({ totalActiveTask }) => {
           {showTask && (
             <div className="absolute top-0 z-50 left-0 w-full bg-gray-900 bg-opacity-50 flex items-center justify-center">
               <div className="bg-white overflow-y-auto rounded-lg h-screen shadow-md p-6 w-[60%]">
-                <div className="flex flex-row justify-between mb-4">
-                  <h1 className=" text-2xl font-bold bg-green-500 text-white rounded-xl px-3 py-1">
-                    My Task
-                  </h1>
-                  <div>
-                    <button
-                      type="button"
-                      onClick={toggleTask}
-                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md mr-2 hover:bg-gray-400"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-                <div className="mb-4">
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    {usertask?.title}
-                  </h2>
-                </div>
-
-                <p className="text-gray-700 mb-4 bg-gray-100 p-4 rounded-lg">
-                  {usertask?.description}
-                </p>
-
-                <div className="flex justify-between mb-4">
-                  <div className="flex items-center">
-                    <p className="text-gray-600 mr-2">Priority:</p>
-                    <span
-                      className={`px-2 py-1 rounded-full font-bold text-white ${
-                        usertask?.priority >= 4
-                          ? "bg-red-400"
-                          : usertask?.priority === 3
-                          ? " bg-sky-500"
-                          : usertask?.priority === 2
-                          ? " bg-sky-300"
-                          : " bg-gray-400"
-                      }`}
-                    >
-                      {usertask?.priority >= 4
-                        ? "HIGHEST"
-                        : usertask?.priority == 3
-                        ? "HIGH"
-                        : usertask?.priority == 2
-                        ? "MEDIUM"
-                        : "LOW"}
-                    </span>
-                  </div>
-                  <p className="text-gray-600">
-                    Due Date:{" "}
-                    <strong className="text-gray-800">
-                      {usertask?.dueDate?.substring(0, 10)}
-                    </strong>
-                  </p>
-                </div>
-
-                <div className="mb-5 bg-gray-200 p-5 rounded-xl">
-                  <h4 className="text-lg font-bold text-gray-800 mb-5 bg-white p-2 rounded-lg">
-                    People Assigned
-                  </h4>
-                  <ul className="list-disc list-inside bg-gray-400 p-5 rounded-xl">
-                    {usertask?.assign?.map(
-                      (assign, index) =>
-                        assign?.approved && (
+                {usertask ? (
+                  <>
+                    <div className="flex flex-row justify-between mb-4">
+                      <h1 className="text-2xl font-bold bg-green-500 text-white rounded-xl px-3 py-1">
+                        My Task
+                      </h1>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={toggleTask}
+                          className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md mr-2 hover:bg-gray-400"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <h2 className="text-2xl font-bold text-gray-800">
+                        {usertask?.title}
+                      </h2>
+                    </div>
+                    <p className="text-gray-700 mb-4 bg-gray-100 p-4 rounded-lg">
+                      {usertask?.description}
+                    </p>
+                    <div className="flex justify-between mb-4">
+                      <div className="flex items-center">
+                        <p className="text-gray-600 mr-2">Priority:</p>
+                        <span
+                          className={`px-2 py-1 rounded-full font-bold text-white ${
+                            usertask?.priority >= 4
+                              ? "bg-red-400"
+                              : usertask?.priority === 3
+                              ? " bg-sky-500"
+                              : usertask?.priority === 2
+                              ? " bg-sky-300"
+                              : " bg-gray-400"
+                          }`}
+                        >
+                          {usertask?.priority >= 4
+                            ? "HIGHEST"
+                            : usertask?.priority == 3
+                            ? "HIGH"
+                            : usertask?.priority == 2
+                            ? "MEDIUM"
+                            : "LOW"}
+                        </span>
+                      </div>
+                      <p className="text-gray-600">
+                        Due Date:{" "}
+                        <strong className="text-gray-800">
+                          {usertask?.dueDate?.substring(0, 10)}
+                        </strong>
+                      </p>
+                    </div>
+                    {usertask.status === "pending" && (
+                      <button
+                        onClick={() => handleAccept(usertask?._id)}
+                        className="bg-green-500 text-white py-2 px-6 rounded-full hover:bg-green-700 transition duration-300"
+                      >
+                        Accept Task
+                      </button>
+                    )}
+                    <div className="mb-5 bg-gray-200 p-5 rounded-xl">
+                      <h4 className="text-lg font-bold text-gray-800 mb-5 bg-white p-2 rounded-lg">
+                        People Assigned
+                      </h4>
+                      <ul className="list-disc list-inside bg-gray-400 p-5 rounded-xl">
+                        {usertask?.assign?.map(
+                          (assign, index) =>
+                            assign?.approved && (
+                              <li
+                                key={index}
+                                className="flex items-center mb-2 bg-gray-100 p-4 rounded-lg"
+                              >
+                                <CgProfile className="text-gray-500 mr-2" />
+                                <div>
+                                  <p className="text-gray-600">
+                                    Assigned By{" "}
+                                    <strong className="text-gray-800">
+                                      {assign?.assignedBy?.name}
+                                    </strong>
+                                  </p>
+                                  <p className="text-gray-600">
+                                    Assigned To{" "}
+                                    <strong className="text-gray-800">
+                                      {assign?.assignedTo?.name}
+                                    </strong>
+                                  </p>
+                                </div>
+                              </li>
+                            )
+                        )}
+                      </ul>
+                      <div className="mt-4">
+                        <div>
+                          <label
+                            htmlFor="assignedTo"
+                            className="block font-bold mb-2"
+                          >
+                            Assigned To:
+                          </label>
+                          <select
+                            type="text"
+                            id="assignedTo"
+                            value={assignedTo}
+                            onChange={(e) => setAssignedTo(e.target.value)}
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded"
+                          >
+                            <option value="">AssignedTo</option>
+                            {users &&
+                              users.map((item, index) => (
+                                <option value={item?._id} key={index}>
+                                  {item?.name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                        <button
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            await handleAssign();
+                          }}
+                          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
+                        >
+                          Assign
+                        </button>
+                      </div>
+                    </div>
+                    <div className="bg-gray-200 p-5 rounded-xl">
+                      <h4 className="text-lg font-bold text-gray-800 mb-4 bg-gray-100 p-2 rounded-lg">
+                        Comments
+                      </h4>
+                      <div className="flex mb-4">
+                        <input
+                          type="text"
+                          placeholder="Comment"
+                          value={newComment}
+                          onChange={(e) => setNewComment(e.target.value)}
+                          className="flex-grow px-4 py-2 border border-gray-300 rounded bg-gray-100 text-gray-800 mr-2"
+                        />
+                        <button
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            await addComment(usertask?._id);
+                          }}
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                          Comment
+                        </button>
+                      </div>
+                      <ul className="list-disc list-inside">
+                        {usertask?.comments?.map((comment, index) => (
                           <li
                             key={index}
-                            className="flex items-center mb-2 bg-gray-100 p-4 rounded-lg"
+                            className="mb-2 bg-gray-100 p-4 rounded-lg"
                           >
-                            <CgProfile className="text-gray-500 mr-2" />
-                            <div>
-                              <p className="text-gray-600">
-                                Assigned By{" "}
-                                <strong className="text-gray-800">
-                                  {assign?.assignedBy?.name}
-                                </strong>
-                              </p>
-                              <p className="text-gray-600">
-                                Assigned To{" "}
-                                <strong className="text-gray-800">
-                                  {assign?.assignedTo?.name}
-                                </strong>
-                              </p>
+                            <div className="text-gray-600">
+                              By{" "}
+                              <strong className="text-gray-800">
+                                {comment?.commentedBy?.username}
+                              </strong>
+                            </div>
+                            <div className="text-gray-700">
+                              :- {comment?.text}
                             </div>
                           </li>
-                        )
-                    )}
-                  </ul>
-                  <div className="mt-4">
-                    <div>
-                      <label
-                        htmlFor="assignedTo"
-                        className="block font-bold mb-2"
-                      >
-                        Assigned To:
-                      </label>
-                      <select
-                        type="text"
-                        id="assignedTo"
-                        value={assignedTo}
-                        onChange={(e) => setAssignedTo(e.target.value)}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded"
-                      >
-                        <option value="">AssignedTo</option>
-                        {users &&
-                          users.map((item, index) => (
-                            <option value={item?._id} key={index}>
-                              {item?.name}
-                            </option>
-                          ))}
-                      </select>
+                        ))}
+                      </ul>
                     </div>
-                    <button
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        await handleAssign();
-                      }}
-                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
-                    >
-                      Assign
-                    </button>
+                  </>
+                ) : (
+                  <div>
+                    <div className="text-center text-xl text-gray-700">
+                      No Task Available
+                    </div>
+                    <div>
+                        <button
+                          type="button"
+                          onClick={toggleTask}
+                          className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md mr-2 hover:bg-gray-400"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                   </div>
-                </div>
-
-                <div className="bg-gray-200 p-5 rounded-xl">
-                  <h4 className="text-lg font-bold text-gray-800 mb-4 bg-gray-100 p-2 rounded-lg">
-                    Comments
-                  </h4>
-                  <div className="flex mb-4">
-                    <input
-                      type="text"
-                      placeholder="Comment"
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      className="flex-grow px-4 py-2 border border-gray-300 rounded bg-gray-100 text-gray-800 mr-2"
-                    />
-                    <button
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        await addComment(usertask?._id);
-                      }}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Comment
-                    </button>
-                  </div>
-                  <ul className="list-disc list-inside">
-                    {usertask?.comments?.map((comment, index) => (
-                      <li
-                        key={index}
-                        className="mb-2 bg-gray-100 p-4 rounded-lg"
-                      >
-                        <div className="text-gray-600">
-                          By{" "}
-                          <strong className="text-gray-800">
-                            {comment?.commentedBy?.username}
-                          </strong>
-                        </div>
-                        <div className="text-gray-700">:- {comment?.text}</div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                )}
               </div>
             </div>
           )}
@@ -754,20 +802,20 @@ const Task = ({ totalActiveTask }) => {
         </div>
       </div>
 
-      <div className='bg-white p-5 flex flex-col justify-center mb-6 rounded-xl'>
-          <h1 className='text-center text-2xl mb-5 font-semibold'>Task</h1>
-          <div className='flex flex-row gap-9 mb-8 w-[100%] justify-center mx-0'>
-            {/* <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
+      <div className="bg-white p-5 flex flex-col justify-center mb-6 rounded-xl">
+        <h1 className="text-center text-2xl mb-5 font-semibold">Task</h1>
+        <div className="flex flex-row gap-9 mb-8 w-[100%] justify-center mx-0">
+          {/* <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
             <FabricatorPieChart data={FabricatorpieData[0]} />
             </div> */}
-            <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
-              <PriorityPie />
-            </div>
-            <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
+          <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
+            <PriorityPie />
+          </div>
+          <div className="bg-white rounded-xl p-5 shadow-xl shadow-green-200">
             <StatusPie />
-            </div>
           </div>
         </div>
+      </div>
 
       <div className="bg-white p-5 rounded-xl drop-shadow-md">
         <h2 className="text-2xl font-bold mb-4">Task</h2>
@@ -776,9 +824,9 @@ const Task = ({ totalActiveTask }) => {
             <select
               type="text"
               id="department"
-             onChange={(e) => {
-              setDropFrab(e.target.value)
-             }}
+              onChange={(e) => {
+                setDropFrab(e.target.value);
+              }}
               className="border border-gray-300 rounded-md px-3 py-2"
             >
               <option value="">All Fabricators</option>
@@ -792,18 +840,16 @@ const Task = ({ totalActiveTask }) => {
               type="text"
               id="project"
               onChange={(e) => {
-                setDropProj(e.target.value)
+                setDropProj(e.target.value);
               }}
               className="border border-gray-300 rounded-md px-3 py-2"
             >
               <option value="">All Projects</option>
-              {
-                projFilterInfo?.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))
-              }
+              {projFilterInfo?.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
             </select>
             <div>
               <button
