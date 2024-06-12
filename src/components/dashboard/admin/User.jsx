@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { FaUserPlus, FaUsers } from 'react-icons/fa'
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { BASE_URL } from '../../../constant'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -44,7 +45,7 @@ const User = () => {
     }
 
     const response = await fetch(
-      '/api/v1/group/all/',
+      `${BASE_URL}/api/v1/group/all/`,
       requestOptions
     )
 
@@ -63,7 +64,7 @@ const User = () => {
       redirect: 'follow'
     }
 
-    await fetch('/api/v1/user/all/', requestOptions)
+    await fetch(`${BASE_URL}/api/v1/user/all/`, requestOptions)
     .then(async response => {
       const data = await response.json()
       console.log(data)
@@ -89,7 +90,7 @@ const User = () => {
     }
 
     const response = await fetch(
-      `/api/v1/group/${userGroup}`,
+      `${BASE_URL}/api/v1/group/${userGroup}`,
       requestOptions
     )
 
@@ -118,7 +119,7 @@ const User = () => {
       redirect: 'follow'
     }
 
-    const response = await fetch(`/api/v1/user/regsiter/${userGroup}`, requestOptions)
+    const response = await fetch(`${BASE_URL}/api/v1/user/regsiter/${userGroup}`, requestOptions)
     const data = await response.json()
     console.log(data)
     fetchData();
@@ -135,7 +136,7 @@ const User = () => {
       redirect: 'follow'
     }
 
-   const response =await fetch (`/api/v1/group/all/`,requestOptions)
+   const response =await fetch (`${BASE_URL}/api/v1/group/all/`,requestOptions)
    const data = await response.json()
     setUserGroup(data?.data?.accessLevel)
   }

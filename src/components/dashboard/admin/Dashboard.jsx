@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import ProjectPie from './ProjectPie'
 import PriorityPie from './PriorityPie'
 import StatusPie from './StatusPie'
+import { BASE_URL } from '../../../constant'
 
 const Dashboard = ({ totalUsers}) => {
   const [preDept, setPreDept] = useState([])
@@ -51,7 +52,7 @@ const Dashboard = ({ totalUsers}) => {
       redirect: 'follow'
     }
 
-    const response = await fetch('/api/v1/project/all',requestOptions)
+    const response = await fetch(`${BASE_URL}/api/v1/project/all`,requestOptions)
       
         const data = await response.json()
         // console.log(data?.data)
@@ -70,7 +71,7 @@ const Dashboard = ({ totalUsers}) => {
       redirect: 'follow'
     }
 
-    const response = await fetch('/api/v1/task/all',requestOptions)
+    const response = await fetch(`${BASE_URL}/api/v1/task/all`,requestOptions)
       
         const data = await response.json()
         // console.log(data?.data)
@@ -90,7 +91,7 @@ const Dashboard = ({ totalUsers}) => {
     }
 
     await fetch(
-      '/api/v1/group/all/',
+      `${BASE_URL}/api/v1/group/all/`,
       requestOptions
     )
       .then(async response => {
@@ -113,7 +114,7 @@ const Dashboard = ({ totalUsers}) => {
       redirect: 'follow'
     }
 
-    const response = await fetch('/api/v1/user/all',  requestOptions)
+    const response = await fetch(`${BASE_URL}/api/v1/user/all`,  requestOptions)
       
         const data = await response.json()
         // console.log(data?.data)

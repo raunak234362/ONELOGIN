@@ -5,6 +5,7 @@ import { FaBuilding, FaTasks, FaUserPlus, FaUsers } from 'react-icons/fa'
 import { Pie } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Search } from 'lucide-react'
+import { BASE_URL } from '../../../constant'
 
 const Project = () => {
   const [formData, setFormData] = useState({})
@@ -58,7 +59,7 @@ const Project = () => {
     }
 
     const response = await fetch(
-      '/api/v1/group/all/',
+      `${BASE_URL}/api/v1/group/all/`,
       requestOptions
     )
 
@@ -79,7 +80,7 @@ const Project = () => {
     }
 
     const response = await fetch(
-      `/api/v1/user/all/${groupId}`,
+      `${BASE_URL}/api/v1/user/all/${groupId}`,
       requestOptions
     )
 
@@ -101,7 +102,7 @@ const Project = () => {
     }
 
     const response = await fetch(
-      '/api/v1/fabricator/all/',
+      `${BASE_URL}/api/v1/fabricator/all/`,
       requestOptions
     )
 
@@ -122,7 +123,7 @@ const Project = () => {
     }
 
     const response = await fetch(
-      '/api/v1/project/all/',
+      `${BASE_URL}/api/v1/project/all/`,
       requestOptions
     )
     .then(async response => {

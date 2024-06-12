@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { FaBuilding, FaPlusCircle, FaUsers } from 'react-icons/fa'
 import { faker } from '@faker-js/faker'
 import { useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../../../constant'
 
 const UserGroup = () => {
     const [name, setName] = useState('')
@@ -122,7 +123,7 @@ const UserGroup = () => {
   
       try {
         const response = await fetch(
-          '/api/v1/group/create/',
+          `${BASE_URL}/api/v1/group/create/`,
           requestOptions
         )
         const result = await response.json()
@@ -155,7 +156,7 @@ const UserGroup = () => {
       }
   
       // Fetch group data
-      await fetch('/api/v1/group/all/', requestOptions)
+      await fetch(`${BASE_URL}/api/v1/group/all/`, requestOptions)
       .then(async response => {
         const data = await response.json()
         console.log(data)

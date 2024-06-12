@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
 import { FaUserPlus, FaUsers } from 'react-icons/fa'
+import { BASE_URL } from '../../../constant'
 
 const Fabricator = ({ totalRegisteredFabricator }) => {
   const [formData, setFormData] = useState()
@@ -26,7 +27,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
       redirect: 'follow'
     }
 
-    const response = await fetch('/api/v1/fabricator/all/',requestOptions)
+    const response = await fetch(`${BASE_URL}/api/v1/fabricator/all/`,requestOptions)
       const data = await response.json()
       setInfo(data?.data)
       setTotalFabricator(data?.data?.length)
@@ -49,7 +50,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
     };
     console.log(modifyFabricator);
 
-    const response = await fetch(  `/api/v1/fabricator/${index}/update`,requestOptions );
+    const response = await fetch(  `${BASE_URL}/api/v1/fabricator/${index}/update`,requestOptions );
     console.log(index)
     const data = await response.json();
     setModifyFabricator(data?.data);
@@ -75,7 +76,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
     }
     console.log(requestOptions);
     const response = await fetch(
-      '/api/v1/fabricator/create/',
+      `${BASE_URL}/api/v1/fabricator/create/`,
       requestOptions
     )
     const data = await response.json()

@@ -7,6 +7,7 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Search } from "lucide-react";
 import ProjectPie from "./ProjectPie";
+import { BASE_URL } from "../../../constant";
 
 const Project = () => {
   const [formData, setFormData] = useState({});
@@ -68,7 +69,7 @@ const Project = () => {
     console.log(modifyProject);
 
     const response = await fetch(
-      `/api/v1/project/${index}/update/`,
+      `${BASE_URL}/api/v1/project/${index}/update/`,
       requestOptions
     );
     console.log(index);
@@ -92,7 +93,7 @@ const Project = () => {
     };
 
     const response = await fetch(
-      "/api/v1/group/all/",
+      `${BASE_URL}/api/v1/group/all/`,
       requestOptions
     );
 
@@ -118,7 +119,7 @@ const Project = () => {
     };
 
     const response = await fetch(
-      `/api/v1/user/all/${groupId}`,
+      `${BASE_URL}/api/v1/user/all/${groupId}`,
       requestOptions
     );
 
@@ -144,7 +145,7 @@ const Project = () => {
     };
 
     const response = await fetch(
-      "/api/v1/fabricator/all/",
+      `${BASE_URL}/api/v1/fabricator/all/`,
       requestOptions
     );
 
@@ -170,7 +171,7 @@ const Project = () => {
       redirect: "follow",
     };
 
-    let url = "/api/v1/project/all/";
+    let url = `${BASE_URL}/api/v1/project/all/`;
 
     if (dropFrab?.trim() != "" && dropFrab) {
       url += `?fabricator=${dropFrab}`
@@ -199,7 +200,7 @@ const Project = () => {
     };
 
     const response = await fetch(
-      "/api/v1/project/create/",
+      `${BASE_URL}/api/v1/project/create/`,
       requestOptions
     );
     const data = await response.json();

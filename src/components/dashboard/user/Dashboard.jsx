@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { FaUserPlus, FaUsers } from 'react-icons/fa'
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { BASE_URL } from '../../../constant'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -44,7 +45,7 @@ const User = () => {
     }
 
     const response = await fetch(
-      '/api/v1/group/all/',
+      `${BASE_URL}/api/v1/group/all/`,
       requestOptions
     )
 
@@ -63,7 +64,7 @@ const User = () => {
       redirect: 'follow'
     }
 
-    await fetch('/api/v1/user/all/', requestOptions)
+    await fetch(`${BASE_URL}/api/v1/user/all/`, requestOptions)
     .then(async response => {
       const data = await response.json()
       console.log(data)
@@ -89,7 +90,7 @@ const User = () => {
     }
 
     const response = await fetch(
-      `/api/v1/group/${userGroup}`,
+      `${BASE_URL}/api/v1/group/${userGroup}`,
       requestOptions
     )
 
@@ -118,7 +119,7 @@ const User = () => {
       redirect: 'follow'
     }
 
-    const response = await fetch(`/api/v1/user/regsiter/${userGroup}`, requestOptions)
+    const response = await fetch(`${BASE_URL}/api/v1/user/regsiter/${userGroup}`, requestOptions)
     const data = await response.json()
     console.log(data)
     fetchData();
@@ -135,20 +136,20 @@ const User = () => {
       redirect: 'follow'
     }
 
-    let URI = `https://wbt-projecttimeline.onrender.com/api/user/all`
+    let URI = `${BASE_URL}/api/user/all`
     if (
       dropDept &&
       dropType &&
       dropDept?.trim()?.length !== 0 &&
       dropType?.trim()?.length !== 0
     ) {
-      URI = `https://wbt-projecttimeline.onrender.com/api/user/all?department=${dropDept}&type=${dropType}`
+      URI = `${BASE_URL}/api/user/all?department=${dropDept}&type=${dropType}`
     } else if (dropDept && dropDept?.trim()?.length !== 0) {
-      URI = `https://wbt-projecttimeline.onrender.com/api/user/all?department=${dropDept}`
+      URI = `${BASE_URL}/api/user/all?department=${dropDept}`
     } else if (dropType && dropType?.trim()?.length !== 0) {
-      URI = `https://wbt-projecttimeline.onrender.com/api/user/all?type=${dropType}`
+      URI = `${BASE_URL}/api/user/all?type=${dropType}`
     } else {
-      URI = `https://wbt-projecttimeline.onrender.com/api/user/all`
+      URI = `${BASE_URL}/api/user/all`
     }
 
     console.log(URI)

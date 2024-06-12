@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
+import { BASE_URL } from "../../../constant";
 
 const ProjectPie = ({ stage }) => {
   const [onHold, setOnHold] = useState(0);
@@ -24,7 +25,7 @@ const ProjectPie = ({ stage }) => {
     };
 
     const response = await fetch(
-      `/api/v1/project/all?stage=${stage}`,
+      `${BASE_URL}/api/v1/project/all?stage=${stage}`,
       requestOptions
     );
 

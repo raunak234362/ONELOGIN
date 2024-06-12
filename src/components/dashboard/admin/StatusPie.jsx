@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
+import { BASE_URL } from "../../../constant";
 
 const StatusPie = () => {
   const [status, setStatus] = useState([])
@@ -22,7 +23,7 @@ const StatusPie = () => {
     };
 
     const response = await fetch(
-      `/api/v1/task/all`,
+      `${BASE_URL}/api/v1/task/all`,
       requestOptions
     );
     const data = await response.json();

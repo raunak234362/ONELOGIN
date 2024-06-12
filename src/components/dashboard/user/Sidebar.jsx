@@ -8,6 +8,7 @@ import profile from "../../../assets/user.jpg"
 import { MdLogout } from "react-icons/md"
 import { useState } from "react"
 import { useUser } from "../../../hooks/useUser"
+import { BASE_URL } from "../../../constant"
 
 
 
@@ -19,7 +20,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
   const fetchLogout = async () => {
     try {
       const accessToken = localStorage.getItem("access");
-      const response = await fetch("/api/v1/user/logut/", {
+      const response = await fetch(`${BASE_URL}/api/v1/user/logut/`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

@@ -3,6 +3,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import user from '../../../assets/user.jpg'
+import { BASE_URL } from '../../../constant'
 
 const Header = ({ activeLink }) => {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false)
@@ -28,7 +29,7 @@ const Header = ({ activeLink }) => {
     }
 
     await fetch(
-      '/api/user/logout',
+      `${BASE_URL}/api/v1/user/logout`,
       requestOptions
     )
       .then(async response => {})

@@ -14,6 +14,7 @@ import { useUser } from "../../../hooks/useUser";
 import { Calendar, User, Users } from "lucide-react";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { ImOffice } from "react-icons/im";
+import { BASE_URL } from "../../../constant";
 
 const Sidebar = ({ activeLink, handleNavLinkClick }) => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
     try {
       const accessToken = localStorage.getItem("access");
       const response = await fetch(
-        "/api/v1/user/logut/",
+        `${BASE_URL}/api/v1/user/logut/`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

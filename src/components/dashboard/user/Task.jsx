@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FaTasks, FaUserPlus, FaUsers } from "react-icons/fa";
+import { BASE_URL } from "../../../constant";
 
 const Task = ({ totalActiveTask }) => {
   const [addTask, setAddTask] = useState({});
@@ -56,7 +57,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      "/api/v1/task/all",
+      `${BASE_URL}/api/v1/task/all`,
       requestOptions
     )
       .then(async (response) => {
@@ -81,7 +82,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      "/api/v1/task/",
+      `${BASE_URL}/api/v1/task/`,
       requestOptions
     )
       .then(async (response) => {
@@ -106,7 +107,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      "/api/v1/user/all/",
+      `${BASE_URL}/api/v1/user/all/`,
       requestOptions
     );
 
@@ -137,7 +138,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(requestOptions);
 
     await fetch(
-      `/api/v1/task/${taskId}/assign/`,
+      `${BASE_URL}/api/v1/task/${taskId}/assign/`,
       requestOptions
     )
       .then(async (response) => {
@@ -165,7 +166,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      `/api/v1/task/${taskId}/comments/`,
+      `${BASE_URL}/api/v1/task/${taskId}/comments/`,
       requestOptions
     )
       .then(async (response) => {
@@ -195,7 +196,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(requestOptions);
 
     const response = await fetch(
-      `/api/v1/task/${taskId}/addComment/`,
+      `${BASE_URL}/api/v1/task/${taskId}/addComment/`,
       requestOptions
     );
 
@@ -218,7 +219,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      `/api/v1/task/${taskId}/accept`,
+      `${BASE_URL}/api/v1/task/${taskId}/accept`,
       requestOptions
     );
     const data = await response.json();
@@ -288,7 +289,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      `/api/v1/task/add/assign/`,
+      `${BASE_URL}/api/v1/task/add/assign/`,
       requestOptions
     )
       .then((response) => response.json())

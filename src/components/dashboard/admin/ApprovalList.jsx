@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 
 import { useEffect, useState } from "react";
+import { BASE_URL } from "../../../constant";
 
 const ApprovalList = ({ toggleApprove }) => {
   const Priority = {
@@ -38,7 +39,7 @@ const ApprovalList = ({ toggleApprove }) => {
     console.log(requestOptions);
 
     await fetch(
-      `/api/v1/task/${taskId}/addComment/`,
+      `${BASE_URL}/api/v1/task/${taskId}/addComment/`,
       requestOptions
     )
       .then(async (response) => {
@@ -60,7 +61,7 @@ const ApprovalList = ({ toggleApprove }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      "/api/v1/task/assign/all",
+      `${BASE_URL}/api/v1/task/assign/all`,
       requestOptions
     );
     const data = await response.json();
@@ -86,7 +87,7 @@ const ApprovalList = ({ toggleApprove }) => {
     };
 
     const response = await fetch(
-      `/api/v1/task/${taskId}/approve/`,
+      `${BASE_URL}/api/v1/task/${taskId}/approve/`,
       requestOptions
     );
     const data = await response.json();

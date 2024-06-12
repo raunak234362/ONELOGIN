@@ -4,6 +4,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import login from '../../assets/images/login.jpg'
+import { BASE_URL } from '../../constant'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -30,7 +31,7 @@ const Login = () => {
     setError('');
   
     try {
-      const response = await fetch('/api/v1/user/login/', {
+      const response = await fetch(`${BASE_URL}/api/v1/user/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

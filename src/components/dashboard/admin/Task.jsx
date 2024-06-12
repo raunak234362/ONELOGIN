@@ -9,6 +9,7 @@ import { MdOutlinePendingActions } from "react-icons/md";
 import ApprovalList from "./ApprovalList";
 import PriorityPie from "./PriorityPie";
 import StatusPie from "./StatusPie";
+import { BASE_URL } from "../../../constant";
 
 const Task = ({ totalActiveTask }) => {
   const [addTask, setAddTask] = useState({});
@@ -62,7 +63,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      "/api/v1/task/assign/all",
+      `${BASE_URL}/api/v1/task/assign/all`,
       requestOptions
     );
     const data = await response.json();
@@ -83,7 +84,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
 
-    let url = "/api/v1/task/all";
+    let url = `${BASE_URL}/api/v1/task/all`;
 
     if (dropFrab?.trim() != "" && dropFrab) {
       url += `?fabricator=${dropFrab}`;
@@ -120,7 +121,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      `/api/v1/task/${taskId}/accept`,
+      `${BASE_URL}/api/v1/task/${taskId}/accept`,
       requestOptions
     );
     const data = await response.json();
@@ -143,7 +144,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      "/api/v1/task/",
+      `${BASE_URL}/api/v1/task/`,
       requestOptions
     )
       .then(async (response) => {
@@ -169,7 +170,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     const response = await fetch(
-      "/api/v1/project/all/",
+      `${BASE_URL}/api/v1/project/all/`,
       requestOptions
     );
     const data = await response.json();
@@ -194,7 +195,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     const response = await fetch(
-      "/api/v1/user/all/",
+      `${BASE_URL}/api/v1/user/all/`,
       requestOptions
     );
 
@@ -215,7 +216,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     const response = await fetch(
-      "/api/v1/fabricator/all/",
+      `${BASE_URL}/api/v1/fabricator/all/`,
       requestOptions
     );
 
@@ -249,7 +250,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(requestOptions);
 
     const response = await fetch(
-      `/api/v1/task/${taskId}/assign/`,
+      `${BASE_URL}/api/v1/task/${taskId}/assign/`,
       requestOptions
     );
 
@@ -277,7 +278,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      `/api/v1/task/${taskId}/comments/`,
+      `${BASE_URL}/api/v1/task/${taskId}/comments/`,
       requestOptions
     )
       .then(async (response) => {
@@ -306,7 +307,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(requestOptions);
 
     await fetch(
-      `/api/v1/task/${taskId}/addComment/`,
+      `${BASE_URL}/api/v1/task/${taskId}/addComment/`,
       requestOptions
     )
       .then(async (response) => {
@@ -334,7 +335,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(modifyTask);
 
     const response = await fetch(
-      `/api/v1/task/${index}/update/`,
+      `${BASE_URL}/api/v1/task/${index}/update/`,
       requestOptions
     );
     console.log(index);
@@ -363,7 +364,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(addTask);
 
     const response = await fetch(
-      `/api/v1/task/create`,
+      `${BASE_URL}/api/v1/task/create`,
       requestOptions
     );
     const data = await response.json();
