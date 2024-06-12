@@ -6,9 +6,9 @@ const Header = () => {
     <div>
       <div className="header">
         <div className="header-content">
-          <h1 className="xl:text-6xl sm:text-md text-center mt-10 font-semibold">Whiteboard's OneLogin</h1>
+          <h1 className="xl:text-6xl sm:text-md text-center mt-10 font-semibold">Whiteboard's Project Tracker</h1>
           <p className="text-center text-2xl text-gray-950 mt-3">
-            Whiteboard's OneLogin is the easiest way to add authentication to your web and
+            Whiteboard's Project Tracker is the easiest way to add authentication to your web and
             mobile apps.
           </p>
           <div className="mt-8 flex justify-center">
