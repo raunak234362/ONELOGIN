@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { BASE_URL } from "../constant";
 
 const useUser = () => {
   const [user, setUser] = useState(null);
@@ -9,7 +10,7 @@ const useUser = () => {
     const fetchUser = async () => {
       try {
         const accessToken = localStorage.getItem("access");
-        const response = await fetch("/api/v1/user/", {
+        const response = await fetch(`${BASE_URL}/api/v1/user/`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
