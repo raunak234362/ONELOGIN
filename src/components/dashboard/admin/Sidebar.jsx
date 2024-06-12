@@ -23,7 +23,7 @@ const Sidebar = ({ activeLink, handleNavLinkClick }) => {
     try {
       const accessToken = localStorage.getItem("access");
       const response = await fetch(
-        "https://wbt-onelogin.onrender.com/api/v1/user/logut/",
+        "/api/v1/user/logut/",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

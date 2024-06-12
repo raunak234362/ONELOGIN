@@ -62,7 +62,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/task/assign/all",
+      "/api/v1/task/assign/all",
       requestOptions
     );
     const data = await response.json();
@@ -83,7 +83,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
 
-    let url = "https://wbt-onelogin.onrender.com/api/v1/task/all";
+    let url = "/api/v1/task/all";
 
     if (dropFrab?.trim() != "" && dropFrab) {
       url += `?fabricator=${dropFrab}`;
@@ -120,7 +120,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/accept`,
+      `/api/v1/task/${taskId}/accept`,
       requestOptions
     );
     const data = await response.json();
@@ -143,7 +143,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/task/",
+      "/api/v1/task/",
       requestOptions
     )
       .then(async (response) => {
@@ -169,7 +169,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/project/all/",
+      "/api/v1/project/all/",
       requestOptions
     );
     const data = await response.json();
@@ -194,7 +194,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/user/all/",
+      "/api/v1/user/all/",
       requestOptions
     );
 
@@ -215,7 +215,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/fabricator/all/",
+      "/api/v1/fabricator/all/",
       requestOptions
     );
 
@@ -249,7 +249,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(requestOptions);
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/assign/`,
+      `/api/v1/task/${taskId}/assign/`,
       requestOptions
     );
 
@@ -277,7 +277,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/comments/`,
+      `/api/v1/task/${taskId}/comments/`,
       requestOptions
     )
       .then(async (response) => {
@@ -306,7 +306,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(requestOptions);
 
     await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/addComment/`,
+      `/api/v1/task/${taskId}/addComment/`,
       requestOptions
     )
       .then(async (response) => {
@@ -334,7 +334,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(modifyTask);
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${index}/update/`,
+      `/api/v1/task/${index}/update/`,
       requestOptions
     );
     console.log(index);
@@ -363,7 +363,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(addTask);
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/create`,
+      `/api/v1/task/create`,
       requestOptions
     );
     const data = await response.json();

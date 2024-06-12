@@ -24,7 +24,7 @@ const ProjectPie = ({ stage }) => {
     };
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/project/all?stage=${stage}`,
+      `/api/v1/project/all?stage=${stage}`,
       requestOptions
     );
 

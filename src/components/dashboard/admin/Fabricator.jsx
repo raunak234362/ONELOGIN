@@ -26,7 +26,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
       redirect: 'follow'
     }
 
-    const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/fabricator/all/',requestOptions)
+    const response = await fetch('/api/v1/fabricator/all/',requestOptions)
       const data = await response.json()
       setInfo(data?.data)
       setTotalFabricator(data?.data?.length)
@@ -49,7 +49,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
     };
     console.log(modifyFabricator);
 
-    const response = await fetch(  `https://wbt-onelogin.onrender.com/api/v1/fabricator/${index}/update`,requestOptions );
+    const response = await fetch(  `/api/v1/fabricator/${index}/update`,requestOptions );
     console.log(index)
     const data = await response.json();
     setModifyFabricator(data?.data);
@@ -75,7 +75,7 @@ const Fabricator = ({ totalRegisteredFabricator }) => {
     }
     console.log(requestOptions);
     const response = await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/fabricator/create/',
+      '/api/v1/fabricator/create/',
       requestOptions
     )
     const data = await response.json()

@@ -58,7 +58,7 @@ const Project = () => {
     }
 
     const response = await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/group/all/',
+      '/api/v1/group/all/',
       requestOptions
     )
 
@@ -79,7 +79,7 @@ const Project = () => {
     }
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/user/all/${groupId}`,
+      `/api/v1/user/all/${groupId}`,
       requestOptions
     )
 
@@ -101,7 +101,7 @@ const Project = () => {
     }
 
     const response = await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/fabricator/all/',
+      '/api/v1/fabricator/all/',
       requestOptions
     )
 
@@ -122,7 +122,7 @@ const Project = () => {
     }
 
     const response = await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/project/all/',
+      '/api/v1/project/all/',
       requestOptions
     )
     .then(async response => {

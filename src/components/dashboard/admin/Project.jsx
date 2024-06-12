@@ -68,7 +68,7 @@ const Project = () => {
     console.log(modifyProject);
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/project/${index}/update/`,
+      `/api/v1/project/${index}/update/`,
       requestOptions
     );
     console.log(index);
@@ -92,7 +92,7 @@ const Project = () => {
     };
 
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/group/all/",
+      "/api/v1/group/all/",
       requestOptions
     );
 
@@ -118,7 +118,7 @@ const Project = () => {
     };
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/user/all/${groupId}`,
+      `/api/v1/user/all/${groupId}`,
       requestOptions
     );
 
@@ -144,7 +144,7 @@ const Project = () => {
     };
 
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/fabricator/all/",
+      "/api/v1/fabricator/all/",
       requestOptions
     );
 
@@ -170,7 +170,7 @@ const Project = () => {
       redirect: "follow",
     };
 
-    let url = "https://wbt-onelogin.onrender.com/api/v1/project/all/";
+    let url = "/api/v1/project/all/";
 
     if (dropFrab?.trim() != "" && dropFrab) {
       url += `?fabricator=${dropFrab}`
@@ -199,7 +199,7 @@ const Project = () => {
     };
 
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/project/create/",
+      "/api/v1/project/create/",
       requestOptions
     );
     const data = await response.json();

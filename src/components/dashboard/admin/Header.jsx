@@ -28,7 +28,7 @@ const Header = ({ activeLink }) => {
     }
 
     await fetch(
-      'https://wbt-projecttimeline.onrender.com/api/user/logout',
+      '/api/user/logout',
       requestOptions
     )
       .then(async response => {})

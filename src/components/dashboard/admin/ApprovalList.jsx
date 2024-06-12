@@ -38,7 +38,7 @@ const ApprovalList = ({ toggleApprove }) => {
     console.log(requestOptions);
 
     await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/addComment/`,
+      `/api/v1/task/${taskId}/addComment/`,
       requestOptions
     )
       .then(async (response) => {
@@ -60,7 +60,7 @@ const ApprovalList = ({ toggleApprove }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/task/assign/all",
+      "/api/v1/task/assign/all",
       requestOptions
     );
     const data = await response.json();
@@ -86,7 +86,7 @@ const ApprovalList = ({ toggleApprove }) => {
     };
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/approve/`,
+      `/api/v1/task/${taskId}/approve/`,
       requestOptions
     );
     const data = await response.json();

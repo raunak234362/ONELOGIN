@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {  Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Sidebar from "./Sidebar";
 import Dashboard from "./Dashboard";
@@ -26,15 +26,6 @@ const AdminLayout = () => {
     setShowSidebar(!showSidebar);
   };
 
-  const totalDepartments = 12;
-  const totalUsers = 96;
-  const totalProjects = 13;
-  const totalTasks = 42;
-  const totalRegisteredFabricator = 5;
-  const totalVerifiedUsers = 35;
-  const totalRegisteredUsers = 50;
-  const totalActiveTask = 12;
-
   return (
     <div className="flex flex-col md:flex-row h-screen relative">
       <div
@@ -53,8 +44,6 @@ const AdminLayout = () => {
             activeLink={activeLink}
             handleNavLinkClick={handleNavLinkClick}
           />
-           
-          
         </div>
       </div>
 
@@ -78,64 +67,13 @@ const AdminLayout = () => {
         {/* Content */}
         <div className="flex-1 rounded-lg h-auto pb-20">
           <Routes>
-            <Route
-              path="/"
-              element={
-                <Dashboard
-                  totalDepartments={totalDepartments}
-                  totalUsers={totalUsers}
-                  totalProjects={totalProjects}
-                  totalTasks={totalTasks}
-                />
-              }
-            />
-            <Route
-              path="/project"
-              element={
-                <Project
-                  totalUsers={totalUsers}
-                  totalProjects={totalProjects}
-                  totalTasks={totalTasks}
-                />
-              }
-            />
-            <Route
-              path="/client"
-              element={
-                <Client
-                />
-              }
-            />
-            <Route
-              path="/task"
-              element={<Task totalActiveTask={totalActiveTask} />}
-            />
-            <Route
-              path="/user"
-              element={
-                <User
-                  totalVerifiedUsers={totalVerifiedUsers}
-                  totalRegisteredUsers={totalRegisteredUsers}
-                />
-              }
-            />
-            <Route
-              path="/fabricator"
-              element={
-                <Fabricator
-                  totalRegisteredFabricator={totalRegisteredFabricator}
-                />
-              }
-            />
-            <Route
-              path="/usergroup"
-              element={
-                <UserGroup
-                  totalDepartments={totalDepartments}
-                  totalUsers={totalUsers}
-                />
-              }
-            />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/project" element={<Project />} />
+            <Route path="/client" element={<Client />} />
+            <Route path="/task" element={<Task />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/fabricator" element={<Fabricator />} />
+            <Route path="/usergroup" element={<UserGroup />} />
             <Route path="/calender" element={<Calender />} />
           </Routes>
         </div>

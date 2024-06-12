@@ -122,7 +122,7 @@ const UserGroup = () => {
   
       try {
         const response = await fetch(
-          'https://wbt-onelogin.onrender.com/api/v1/group/create/',
+          '/api/v1/group/create/',
           requestOptions
         )
         const result = await response.json()
@@ -155,7 +155,7 @@ const UserGroup = () => {
       }
   
       // Fetch group data
-      await fetch('https://wbt-onelogin.onrender.com/api/v1/group/all/', requestOptions)
+      await fetch('/api/v1/group/all/', requestOptions)
       .then(async response => {
         const data = await response.json()
         console.log(data)

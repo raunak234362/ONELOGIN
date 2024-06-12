@@ -56,7 +56,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/task/all",
+      "/api/v1/task/all",
       requestOptions
     )
       .then(async (response) => {
@@ -81,7 +81,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/task/",
+      "/api/v1/task/",
       requestOptions
     )
       .then(async (response) => {
@@ -106,7 +106,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      "https://wbt-onelogin.onrender.com/api/v1/user/all/",
+      "/api/v1/user/all/",
       requestOptions
     );
 
@@ -137,7 +137,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(requestOptions);
 
     await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/assign/`,
+      `/api/v1/task/${taskId}/assign/`,
       requestOptions
     )
       .then(async (response) => {
@@ -165,7 +165,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/comments/`,
+      `/api/v1/task/${taskId}/comments/`,
       requestOptions
     )
       .then(async (response) => {
@@ -195,7 +195,7 @@ const Task = ({ totalActiveTask }) => {
     console.log(requestOptions);
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/addComment/`,
+      `/api/v1/task/${taskId}/addComment/`,
       requestOptions
     );
 
@@ -218,7 +218,7 @@ const Task = ({ totalActiveTask }) => {
       redirect: "follow",
     };
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/accept`,
+      `/api/v1/task/${taskId}/accept`,
       requestOptions
     );
     const data = await response.json();
@@ -288,7 +288,7 @@ const Task = ({ totalActiveTask }) => {
     };
 
     await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/add/assign/`,
+      `/api/v1/task/add/assign/`,
       requestOptions
     )
       .then((response) => response.json())

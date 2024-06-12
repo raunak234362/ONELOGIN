@@ -44,7 +44,7 @@ const User = () => {
     }
 
     const response = await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/group/all/',
+      '/api/v1/group/all/',
       requestOptions
     )
 
@@ -63,7 +63,7 @@ const User = () => {
       redirect: 'follow'
     }
 
-    await fetch('https://wbt-onelogin.onrender.com/api/v1/user/all/', requestOptions)
+    await fetch('/api/v1/user/all/', requestOptions)
     .then(async response => {
       const data = await response.json()
       console.log(data)
@@ -89,7 +89,7 @@ const User = () => {
     }
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/group/${userGroup}`,
+      `/api/v1/group/${userGroup}`,
       requestOptions
     )
 
@@ -118,7 +118,7 @@ const User = () => {
       redirect: 'follow'
     }
 
-    const response = await fetch(`https://wbt-onelogin.onrender.com/api/v1/user/regsiter/${userGroup}`, requestOptions)
+    const response = await fetch(`/api/v1/user/regsiter/${userGroup}`, requestOptions)
     const data = await response.json()
     console.log(data)
     fetchData();
@@ -135,7 +135,7 @@ const User = () => {
       redirect: 'follow'
     }
 
-   const response =await fetch (`https://wbt-onelogin.onrender.com/api/v1/group/all/`,requestOptions)
+   const response =await fetch (`/api/v1/group/all/`,requestOptions)
    const data = await response.json()
     setUserGroup(data?.data?.accessLevel)
   }

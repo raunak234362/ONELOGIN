@@ -22,7 +22,7 @@ const StatusPie = () => {
     };
 
     const response = await fetch(
-      `https://wbt-onelogin.onrender.com/api/v1/task/all`,
+      `/api/v1/task/all`,
       requestOptions
     );
     const data = await response.json();

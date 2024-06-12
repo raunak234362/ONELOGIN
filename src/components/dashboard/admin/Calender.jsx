@@ -139,7 +139,7 @@ const Calendar = () => {
     // console.log(requestOptions);
 
     await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/user/all/',
+      '/api/v1/user/all/',
       requestOptions
     )
       .then(async response => {
@@ -177,7 +177,7 @@ const Calendar = () => {
 
     try {
       const response = await fetch(
-        `https://wbt-onelogin.onrender.com/api/v1/task/${taskId}/assign/`,
+        `/api/v1/task/${taskId}/assign/`,
         requestOptions
       );
       const data = await response.json();

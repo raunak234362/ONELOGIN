@@ -51,7 +51,7 @@ const Dashboard = ({ totalUsers}) => {
       redirect: 'follow'
     }
 
-    const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/project/all',requestOptions)
+    const response = await fetch('/api/v1/project/all',requestOptions)
       
         const data = await response.json()
         // console.log(data?.data)
@@ -70,7 +70,7 @@ const Dashboard = ({ totalUsers}) => {
       redirect: 'follow'
     }
 
-    const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/task/all',requestOptions)
+    const response = await fetch('/api/v1/task/all',requestOptions)
       
         const data = await response.json()
         // console.log(data?.data)
@@ -90,7 +90,7 @@ const Dashboard = ({ totalUsers}) => {
     }
 
     await fetch(
-      'https://wbt-onelogin.onrender.com/api/v1/group/all/',
+      '/api/v1/group/all/',
       requestOptions
     )
       .then(async response => {
@@ -113,7 +113,7 @@ const Dashboard = ({ totalUsers}) => {
       redirect: 'follow'
     }
 
-    const response = await fetch('https://wbt-onelogin.onrender.com/api/v1/user/all',  requestOptions)
+    const response = await fetch('/api/v1/user/all',  requestOptions)
       
         const data = await response.json()
         // console.log(data?.data)

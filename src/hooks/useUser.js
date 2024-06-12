@@ -9,7 +9,7 @@ const useUser = () => {
     const fetchUser = async () => {
       try {
         const accessToken = localStorage.getItem("access");
-        const response = await fetch("https://wbt-onelogin.onrender.com/api/v1/user/", {
+        const response = await fetch("/api/v1/user/", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
